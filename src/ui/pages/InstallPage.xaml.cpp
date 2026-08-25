@@ -2,11 +2,13 @@
 #include "ui/pages/InstallPage.xaml.h"
 #include "core/Logger.h"
 #include "core/Localization.h"
+#include "core/Paths.h"
 #include "core/Strings.h"
 #include "core/Utf8.h"
 
 #ifdef _WIN32
 #    include <winrt/Microsoft.UI.Xaml.Controls.h>
+#    include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
 #    include <winrt/Microsoft.UI.Dispatching.h>
 #    include <winrt/Windows.UI.Text.h>
 #    include <winrt/Windows.Foundation.h>
@@ -21,12 +23,56 @@ using namespace Microsoft::UI::Xaml::Controls;
 using namespace Microsoft::UI::Xaml::Controls::Primitives;
 
 namespace {
+constexpr int kPackageIconSizeEpx = 20;
+constexpr int kPackageIconDecodePx = 40; // 2x for crispness on scaled displays
+
 winrt::hstring Loc(std::string_view id) {
     return winrt::hstring{::yeet17::core::Localization::Instance().GetWide(id)};
 }
 
 Style NamedStyle(std::wstring_view key) {
     return Application::Current().Resources().Lookup(box_value(key)).as<winrt::Microsoft::UI::Xaml::Style>();
+}
+
+// file:/// URI for a local path; spaces are the only URI-breaking character
+// our install layouts produce (e.g. "C:\Program Files\...").
+winrt::hstring FileUri(const std::filesystem::path& path) {
+    std::wstring uri = L"file:///";
+    for (const wchar_t ch : path.wstring()) {
+        if (ch == L'\\') {
+            uri += L'/';
+        } else if (ch == L' ') {
+            uri += L"%20";
+        } else {
+            uri += ch;
+        }
+    }
+    return winrt::hstring{uri};
+}
+
+// Icon image (catalog/icons/<id>.png) or a same-size spacer so rows with and
+// without an icon (custom packages) keep their text aligned.
+UIElement PackageIconElement(const std::string& packageId) {
+    std::error_code ec;
+    const auto iconPath = ::yeet17::core::Paths::CatalogDir() / "icons" /
+                          (packageId + ".png");
+    if (std::filesystem::exists(iconPath, ec)) {
+        try {
+            winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage bitmap;
+            bitmap.DecodePixelWidth(kPackageIconDecodePx);
+            bitmap.UriSource(winrt::Windows::Foundation::Uri{FileUri(iconPath)});
+            Image image;
+            image.Source(bitmap);
+            image.Width(kPackageIconSizeEpx);
+            image.Height(kPackageIconSizeEpx);
+            return image;
+        } catch (...) {
+        }
+    }
+    Border spacer;
+    spacer.Width(kPackageIconSizeEpx);
+    spacer.Height(kPackageIconSizeEpx);
+    return spacer;
 }
 } // namespace
 
@@ -129,8 +175,24 @@ void InstallPage::RebuildCatalog() {
             CatalogHost().Children().Append(card);
         }
         CheckBox box;
-        const auto label = pkg.name + (pkg.description.empty() ? "" : ("  ·  " + pkg.description));
-        box.Content(box_value(::yeet17::core::Utf8ToWide(label)));
+        StackPanel rowContent;
+        rowContent.Orientation(Orientation::Horizontal);
+        rowContent.Spacing(10);
+        rowContent.VerticalAlignment(VerticalAlignment::Center);
+        rowContent.Children().Append(PackageIconElement(pkg.id));
+        TextBlock nameText;
+        nameText.Text(::yeet17::core::Utf8ToWide(pkg.name));
+        nameText.VerticalAlignment(VerticalAlignment::Center);
+        rowContent.Children().Append(nameText);
+        if (!pkg.description.empty()) {
+            TextBlock descText;
+            descText.Text(::yeet17::core::Utf8ToWide(pkg.description));
+            descText.Style(NamedStyle(L"CaptionStyle"));
+            descText.TextWrapping(TextWrapping::NoWrap);
+            descText.VerticalAlignment(VerticalAlignment::Center);
+            rowContent.Children().Append(descText);
+        }
+        box.Content(rowContent);
         box.IsChecked(pkg.selected);
         box.Tag(box_value(::yeet17::core::Utf8ToWide(pkg.id)));
         box.Style(NamedStyle(L"PremiumCheckBoxStyle"));
