@@ -50,6 +50,55 @@ winrt::hstring FileUri(const std::filesystem::path& path) {
     return winrt::hstring{uri};
 }
 
+constexpr DWORD kPostInstallTimeoutMs = 10 * 60 * 1000;
+
+// -EncodedCommand payload: base64 of the UTF-16LE command text. Sidesteps
+// every quoting problem a nested iwr/iex one-liner would otherwise cause.
+std::wstring Base64EncodeUtf16(const std::wstring& text) {
+    static constexpr char kAlphabet[] =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const auto* bytes = reinterpret_cast<const unsigned char*>(text.data());
+    const size_t total = text.size() * sizeof(wchar_t);
+    std::wstring out;
+    out.reserve((total + 2) / 3 * 4);
+    for (size_t i = 0; i < total; i += 3) {
+        unsigned value = static_cast<unsigned>(bytes[i]) << 16;
+        if (i + 1 < total) value |= static_cast<unsigned>(bytes[i + 1]) << 8;
+        if (i + 2 < total) value |= bytes[i + 2];
+        out += kAlphabet[(value >> 18) & 63];
+        out += kAlphabet[(value >> 12) & 63];
+        out += (i + 1 < total) ? kAlphabet[(value >> 6) & 63] : L'=';
+        out += (i + 2 < total) ? kAlphabet[value & 63] : L'=';
+    }
+    return out;
+}
+
+// Blocking, hidden PowerShell run; returns the exit code, -1 on start
+// failure or timeout. Called from the install worker thread only.
+int RunHiddenPowerShell(const std::wstring& command) {
+    std::wstring cmdline = L"powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand " +
+                           Base64EncodeUtf16(command);
+    STARTUPINFOW startup{};
+    startup.cb = sizeof(startup);
+    PROCESS_INFORMATION process{};
+    if (!::CreateProcessW(nullptr, cmdline.data(), nullptr, nullptr, FALSE,
+                          CREATE_NO_WINDOW, nullptr, nullptr, &startup, &process)) {
+        return -1;
+    }
+    int exitCode = -1;
+    if (::WaitForSingleObject(process.hProcess, kPostInstallTimeoutMs) == WAIT_OBJECT_0) {
+        DWORD code = 0;
+        if (::GetExitCodeProcess(process.hProcess, &code)) {
+            exitCode = static_cast<int>(code);
+        }
+    } else {
+        ::TerminateProcess(process.hProcess, 1);
+    }
+    ::CloseHandle(process.hProcess);
+    ::CloseHandle(process.hThread);
+    return exitCode;
+}
+
 // Icon image (catalog/icons/<id>.png) or a same-size spacer so rows with and
 // without an icon (custom packages) keep their text aligned.
 UIElement PackageIconElement(const std::string& packageId) {
@@ -239,12 +288,16 @@ void InstallPage::RunOnSelected(::yeet17::install::PackageAction action) {
 
     std::vector<::yeet17::install::PackageJob> jobs;
     jobs.reserve(selected.size());
+    std::unordered_map<std::string, std::string> postInstall;
     for (const auto& pkg : selected) {
         ::yeet17::install::PackageJob job;
         job.action = action;
         job.id = pkg.id;
         job.source = pkg.source.empty() ? "winget" : pkg.source;
         jobs.push_back(std::move(job));
+        if (!pkg.postInstall.empty()) {
+            postInstall[pkg.id] = pkg.postInstall;
+        }
     }
 
     if (cancel_) {
@@ -262,8 +315,22 @@ void InstallPage::RunOnSelected(::yeet17::install::PackageAction action) {
     auto cancel = cancel_;
     auto client = inflight_;
     auto weak = get_weak();
-    worker_ = std::thread([weak, cancel, client, jobs = std::move(jobs)]() {
-        auto result = client->RunBulk(jobs, [weak, cancel](const ::yeet17::install::ProgressEvent& ev) {
+    worker_ = std::thread([weak, cancel, client, jobs = std::move(jobs),
+                           postInstall = std::move(postInstall)]() {
+        auto notify = [weak, cancel](std::string line) {
+            if (auto self = weak.get()) {
+                self->DispatcherQueue().TryEnqueue([weak, cancel, line = std::move(line)] {
+                    if (cancel && cancel->load()) {
+                        return;
+                    }
+                    if (auto page = weak.get()) {
+                        page->AppendLog(line);
+                    }
+                });
+            }
+        };
+        auto result = client->RunBulk(jobs, [weak, cancel, &postInstall,
+                                             &notify](const ::yeet17::install::ProgressEvent& ev) {
             if (cancel && cancel->load()) {
                 return;
             }
@@ -280,6 +347,19 @@ void InstallPage::RunOnSelected(::yeet17::install::PackageAction action) {
                         }
                     }
                 });
+            }
+            // Post-install hook (e.g. SpotX over Spotify): runs synchronously on
+            // this worker thread so the queue stays sequential, never on the UI.
+            if (ev.finished && ev.success &&
+                ev.action != ::yeet17::install::PackageAction::Uninstall) {
+                if (auto found = postInstall.find(ev.packageId); found != postInstall.end()) {
+                    notify("Пост-установка для " + ev.packageId + " — подождите…");
+                    const int code = RunHiddenPowerShell(::yeet17::core::Utf8ToWide(found->second));
+                    notify(code == 0
+                               ? "Пост-установка завершена: " + ev.packageId
+                               : "Пост-установка не удалась (" + ev.packageId +
+                                     ", код " + std::to_string(code) + ")");
+                }
             }
         });
         if (cancel && cancel->load()) {

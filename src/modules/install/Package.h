@@ -10,6 +10,9 @@ struct Package {
     std::string category;    // category id (browsers, comm, ...)
     std::string source;      // "winget" | "choco"
     std::string description;
+    // Optional PowerShell command executed after a successful install/upgrade
+    // of this package (e.g. the SpotX mod on top of Spotify).
+    std::string postInstall;
     bool custom = false;
     // UI selection state (not persisted in catalog/packages.json)
     bool selected = false;

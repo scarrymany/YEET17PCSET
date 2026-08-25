@@ -193,6 +193,7 @@ bool PackageCatalog::LoadFromFile(const std::filesystem::path& path) {
         package.category = item.value("category", std::string{"utilities"});
         package.source = NormalizeSource(item.value("source", std::string{"winget"}));
         package.description = item.value("description", std::string{});
+        package.postInstall = item.value("postInstall", std::string{});
         package.custom = false; // catalog entries are never custom
         if (package.id.empty()) {
             yeet17::core::Logger::Instance().Warn("Пропущена запись каталога без идентификатора");

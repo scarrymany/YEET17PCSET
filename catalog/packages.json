@@ -201,9 +201,10 @@
     },
     {
       "id": "Spotify.Spotify",
-      "name": "Spotify",
-      "description": "Стриминг музыки Spotify",
-      "category": "media"
+      "name": "Spotify + SpotX",
+      "description": "Spotify с модом SpotX (без рекламы)",
+      "category": "media",
+      "postInstall": "$ProgressPreference='SilentlyContinue'; iex \"& { $(iwr -useb 'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -block_update_on -no_pause\""
     },
     {
       "id": "PeterPawlowski.foobar2000",
