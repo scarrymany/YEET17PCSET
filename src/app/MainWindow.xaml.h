@@ -27,6 +27,10 @@ struct MainWindow : MainWindowT<MainWindow> {
 
     void UpdateButton_Click(winrt::Windows::Foundation::IInspectable const&,
                             winrt::Microsoft::UI::Xaml::RoutedEventArgs const&);
+    void TelegramButton_Click(winrt::Windows::Foundation::IInspectable const&,
+                              winrt::Microsoft::UI::Xaml::RoutedEventArgs const&);
+    void GithubButton_Click(winrt::Windows::Foundation::IInspectable const&,
+                            winrt::Microsoft::UI::Xaml::RoutedEventArgs const&);
     void NavView_SelectionChanged(
         winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender,
         winrt::Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);

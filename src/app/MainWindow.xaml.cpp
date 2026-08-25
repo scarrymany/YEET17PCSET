@@ -93,6 +93,13 @@ bool SystemAnimationsEnabled() {
         return true;
     }
 }
+
+constexpr const wchar_t* kTelegramUrl = L"https://t.me/yeet17";
+constexpr const wchar_t* kGithubUrl = L"https://github.com/scarrymany/YEET17PCSET";
+
+void OpenExternalUrl(const wchar_t* url) {
+    ::ShellExecuteW(nullptr, L"open", url, nullptr, nullptr, SW_SHOWNORMAL);
+}
 } // namespace
 
 MainWindow::MainWindow() {
@@ -499,6 +506,14 @@ void MainWindow::LayoutAmbient(float width, float height) {
     const float x = std::max(width - kArchGridWidth - 8.f, 160.f);
     const float y = std::max(height - kArchGridHeight - 84.f, 48.f);
     pixelArchAnchor_.Offset({x, y, 0.f});
+}
+
+void MainWindow::TelegramButton_Click(IInspectable const&, RoutedEventArgs const&) {
+    OpenExternalUrl(kTelegramUrl);
+}
+
+void MainWindow::GithubButton_Click(IInspectable const&, RoutedEventArgs const&) {
+    OpenExternalUrl(kGithubUrl);
 }
 
 void MainWindow::ThemeCombo_SelectionChanged(IInspectable const&, SelectionChangedEventArgs const&) {
