@@ -30,10 +30,14 @@ struct ReleaseInfo {
 
 class SelfUpdate {
 public:
-    static constexpr std::wstring_view kApiHost = L"api.github.com";
+    // Plain github.com redirects, not api.github.com: the REST API allows only
+    // 60 anonymous requests per hour per IP, which silently breaks the update
+    // check for users behind shared/carrier-grade NAT addresses.
+    static constexpr std::wstring_view kReleaseHost = L"github.com";
     static constexpr std::wstring_view kLatestReleasePath =
-        L"/repos/scarrymany/YEET17PCSET/releases/latest";
-    static constexpr std::string_view kAssetSuffix = ".zip";
+        L"/scarrymany/YEET17PCSET/releases/latest";
+    static constexpr std::wstring_view kTagPathMarker = L"/releases/tag/";
+    static constexpr std::string_view kAssetFileName = "YEET17PCSET-win-x64.zip";
 
     static SelfUpdate& Instance();
 

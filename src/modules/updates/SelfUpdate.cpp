@@ -190,20 +190,56 @@ bool SelfUpdate::IsNewer(std::string_view remote, std::string_view local) {
 
 std::expected<std::optional<ReleaseInfo>, std::string>
 SelfUpdate::CheckForUpdate(std::string_view currentVersion) const {
-    std::string body;
-    auto fetched = HttpGet(std::wstring{kApiHost}, std::wstring{kLatestReleasePath},
-                           &body, nullptr, nullptr);
-    if (!fetched) {
-        return std::unexpected(fetched.error());
+    // /releases/latest answers 302 with Location .../releases/tag/<tag>;
+    // reading that header is the whole version check - no API, no rate limit.
+    HInternetGuard session{::WinHttpOpen(kUserAgent.data(),
+                                         WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY,
+                                         WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0)};
+    if (!session) {
+        return std::unexpected("Не удалось открыть сетевую сессию WinHTTP");
+    }
+    ::WinHttpSetTimeouts(session.handle, kHttpTimeoutMs, kHttpTimeoutMs,
+                         kHttpTimeoutMs, kHttpTimeoutMs);
+
+    HInternetGuard connection{::WinHttpConnect(session.handle,
+                                               std::wstring{kReleaseHost}.c_str(),
+                                               INTERNET_DEFAULT_HTTPS_PORT, 0)};
+    if (!connection) {
+        return std::unexpected("Не удалось подключиться к github.com");
     }
 
-    nlohmann::json json = nlohmann::json::parse(body, nullptr, false);
-    if (json.is_discarded() || !json.contains("tag_name")) {
-        return std::unexpected("Некорректный ответ GitHub Releases API");
+    HInternetGuard request{::WinHttpOpenRequest(
+        connection.handle, L"GET", std::wstring{kLatestReleasePath}.c_str(), nullptr,
+        WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE)};
+    if (!request) {
+        return std::unexpected("Не удалось сформировать HTTPS-запрос");
+    }
+    DWORD redirectPolicy = WINHTTP_OPTION_REDIRECT_POLICY_NEVER;
+    ::WinHttpSetOption(request.handle, WINHTTP_OPTION_REDIRECT_POLICY,
+                       &redirectPolicy, sizeof(redirectPolicy));
+
+    if (!::WinHttpSendRequest(request.handle, WINHTTP_NO_ADDITIONAL_HEADERS, 0,
+                              WINHTTP_NO_REQUEST_DATA, 0, 0, 0) ||
+        !::WinHttpReceiveResponse(request.handle, nullptr)) {
+        return std::unexpected("Сетевая ошибка при обращении к github.com");
+    }
+
+    wchar_t location[1024]{};
+    DWORD locationSize = sizeof(location);
+    if (!::WinHttpQueryHeaders(request.handle, WINHTTP_QUERY_LOCATION,
+                               WINHTTP_HEADER_NAME_BY_INDEX, location, &locationSize,
+                               WINHTTP_NO_HEADER_INDEX)) {
+        return std::unexpected("github.com не вернул ссылку на последний релиз");
+    }
+
+    const std::wstring redirect{location};
+    const auto marker = redirect.find(kTagPathMarker);
+    if (marker == std::wstring::npos) {
+        return std::unexpected("Неожиданный адрес релиза: " + core::WideToUtf8(redirect));
     }
 
     ReleaseInfo info;
-    info.tag = json.value("tag_name", "");
+    info.tag = core::WideToUtf8(redirect.substr(marker + kTagPathMarker.size()));
     info.version = info.tag;
     if (!info.version.empty() && (info.version.front() == 'v' || info.version.front() == 'V')) {
         info.version.erase(0, 1);
@@ -212,18 +248,10 @@ SelfUpdate::CheckForUpdate(std::string_view currentVersion) const {
         return std::optional<ReleaseInfo>{};
     }
 
-    for (const auto& asset : json.value("assets", nlohmann::json::array())) {
-        const auto name = asset.value("name", "");
-        if (name.ends_with(kAssetSuffix)) {
-            info.assetName = name;
-            info.assetUrl = asset.value("browser_download_url", "");
-            info.assetSize = asset.value("size", 0ull);
-            break;
-        }
-    }
-    if (info.assetUrl.empty()) {
-        return std::unexpected("В релизе " + info.tag + " нет zip-архива обновления");
-    }
+    info.assetName = std::string{kAssetFileName};
+    info.assetUrl = "https://github.com/scarrymany/YEET17PCSET/releases/download/" +
+                    info.tag + "/" + info.assetName;
+    info.assetSize = 0; // unknown without the API; DownloadAsset skips the size check
     return std::optional<ReleaseInfo>{std::move(info)};
 }
 

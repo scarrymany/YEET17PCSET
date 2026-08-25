@@ -29,15 +29,24 @@ if (-not $runtime) {
     }
 }
 
-$release = Invoke-RestMethod "https://api.github.com/repos/$repo/releases/latest" `
-    -Headers @{ 'User-Agent' = 'YEET17PCSET-Install' }
-$tag = $release.tag_name
+# Direct latest/download links, not api.github.com: the anonymous REST API is
+# limited to 60 requests/hour per IP and breaks for users on shared addresses.
+$latest = "https://github.com/$repo/releases/latest/download"
+try {
+    $tag = ([System.Net.HttpWebRequest]::Create("https://github.com/$repo/releases/latest") |
+        ForEach-Object { $_.AllowAutoRedirect = $false; $_.UserAgent = 'YEET17PCSET-Install'; $_.GetResponse() }).Headers['Location'] -replace '.*/tag/', ''
+} catch { $tag = 'latest' }
 
-$msi = $release.assets | Where-Object { $_.name -like '*.msi' } | Select-Object -First 1
-if ($msi) {
-    $path = Join-Path $env:TEMP $msi.name
-    Write-Host "  Downloading $($msi.name) ($tag)..."
-    Invoke-WebRequest $msi.browser_download_url -OutFile $path -UseBasicParsing
+$msiName = 'YEET17PCSET-win-x64.msi'
+$path = Join-Path $env:TEMP $msiName
+Write-Host "  Downloading $msiName ($tag)..."
+try {
+    Invoke-WebRequest "$latest/$msiName" -OutFile $path -UseBasicParsing
+    $haveMsi = $true
+} catch {
+    $haveMsi = $false
+}
+if ($haveMsi) {
     Write-Host '  Installing - confirm the UAC prompt...'
     $p = Start-Process msiexec -ArgumentList '/i', "`"$path`"", '/passive' -Wait -PassThru
     Remove-Item $path -ErrorAction SilentlyContinue
@@ -48,12 +57,11 @@ if ($msi) {
     return
 }
 
-$zip = $release.assets | Where-Object { $_.name -like '*.zip' } | Select-Object -First 1
-if (-not $zip) { throw "Release $tag has no installable assets" }
-$zipPath = Join-Path $env:TEMP $zip.name
+$zipName = 'YEET17PCSET-win-x64.zip'
+$zipPath = Join-Path $env:TEMP $zipName
 $dest = Join-Path $env:LOCALAPPDATA 'Programs\YEET17PCSET'
-Write-Host "  Downloading $($zip.name) ($tag)..."
-Invoke-WebRequest $zip.browser_download_url -OutFile $zipPath -UseBasicParsing
+Write-Host "  Downloading $zipName ($tag)..."
+Invoke-WebRequest "$latest/$zipName" -OutFile $zipPath -UseBasicParsing
 Write-Host "  Extracting to $dest..."
 Expand-Archive -LiteralPath $zipPath -DestinationPath $dest -Force
 Remove-Item $zipPath -ErrorAction SilentlyContinue

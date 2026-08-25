@@ -46,6 +46,7 @@ struct InstallPage : InstallPageT<InstallPage> {
 
 private:
     void RebuildCategories();
+    void LayoutCategoryChips();
     void RebuildCatalog();
     void AppendLog(std::string_view line);
     void SetBusy(bool busy);
@@ -66,6 +67,8 @@ private:
 #endif
     std::shared_ptr<std::atomic<bool>> cancel_{std::make_shared<std::atomic<bool>>(false)};
     std::thread worker_;
+    std::vector<winrt::Microsoft::UI::Xaml::Controls::Primitives::ToggleButton> categoryChips_;
+    double categoryWidth_{0};
 };
 #else
 struct InstallPage {

@@ -7,6 +7,9 @@
 #include "core/Utf8.h"
 
 #ifdef _WIN32
+#    include <cmath>
+#    include <limits>
+#    include <unordered_set>
 #    include <winrt/Microsoft.UI.Xaml.Controls.h>
 #    include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
 #    include <winrt/Microsoft.UI.Dispatching.h>
@@ -51,6 +54,14 @@ winrt::hstring FileUri(const std::filesystem::path& path) {
 }
 
 constexpr DWORD kPostInstallTimeoutMs = 10 * 60 * 1000;
+
+std::string AsciiLower(std::string_view text) {
+    std::string out{text};
+    for (auto& ch : out) {
+        if (ch >= 'A' && ch <= 'Z') ch = static_cast<char>(ch - 'A' + 'a');
+    }
+    return out;
+}
 
 // -EncodedCommand payload: base64 of the UTF-16LE command text. Sidesteps
 // every quoting problem a nested iwr/iex one-liner would otherwise cause.
@@ -163,6 +174,15 @@ InstallPage::InstallPage() {
         AppendLog(::yeet17::core::Localization::Instance().Get("CatalogMissing"));
     }
 #endif
+    CategoryHost().SizeChanged(
+        [this](auto&&, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args) {
+            const double width = args.NewSize().Width;
+            if (std::abs(width - categoryWidth_) > 1.0) {
+                categoryWidth_ = width;
+                LayoutCategoryChips();
+            }
+        });
+
 #if __has_include("modules/install/WingetClient.h") && __has_include("modules/install/PackageCatalog.h")
     // Quiet scan at startup so already-installed packages are badged
     // without the user pressing the refresh button.
@@ -187,7 +207,7 @@ InstallPage::~InstallPage() {
 
 void InstallPage::RebuildCategories() {
 #if __has_include("modules/install/PackageCatalog.h")
-    CategoryHost().Children().Clear();
+    categoryChips_.clear();
     for (const auto& cat : catalog_.Categories()) {
         ToggleButton chip;
         chip.Content(box_value(::yeet17::core::Utf8ToWide(cat.name)));
@@ -199,8 +219,8 @@ void InstallPage::RebuildCategories() {
             auto btn = sender.as<ToggleButton>();
             if (auto checked = btn.IsChecked(); checked && checked.Value()) {
                 categoryFilter_ = catId;
-                for (auto const& child : CategoryHost().Children()) {
-                    if (auto other = child.try_as<ToggleButton>(); other && other != btn) {
+                for (auto const& other : categoryChips_) {
+                    if (other != btn) {
                         other.IsChecked(false);
                     }
                 }
@@ -209,9 +229,40 @@ void InstallPage::RebuildCategories() {
             }
             RebuildCatalog();
         });
-        CategoryHost().Children().Append(chip);
+        categoryChips_.push_back(chip);
     }
+    LayoutCategoryChips();
 #endif
+}
+
+// Wraps the category chips into as many rows as the available width needs.
+void InstallPage::LayoutCategoryChips() {
+    constexpr double kFallbackRowWidth = 860.0;
+    const double rowWidth = categoryWidth_ > 60.0 ? categoryWidth_ : kFallbackRowWidth;
+
+    // Chips must leave their previous row panels before re-parenting.
+    for (auto const& child : CategoryHost().Children()) {
+        if (auto row = child.try_as<StackPanel>()) {
+            row.Children().Clear();
+        }
+    }
+    CategoryHost().Children().Clear();
+
+    StackPanel row{nullptr};
+    double used = 0;
+    for (auto const& chip : categoryChips_) {
+        chip.Measure({std::numeric_limits<float>::infinity(),
+                      std::numeric_limits<float>::infinity()});
+        const double width = chip.DesiredSize().Width;
+        if (!row || (used > 0 && used + width > rowWidth)) {
+            row = StackPanel();
+            row.Orientation(Orientation::Horizontal);
+            CategoryHost().Children().Append(row);
+            used = 0;
+        }
+        row.Children().Append(chip);
+        used += width;
+    }
 }
 
 void InstallPage::RebuildCatalog() {
@@ -489,16 +540,32 @@ void InstallPage::StartInstalledScan(bool announce) {
                             page->AppendLog(listed.error());
                         }
                     } else {
-                        size_t found = 0;
-                        // Full resync: clears stale flags after an uninstall.
-                        for (const auto& pkg : page->catalog_.All()) {
-                            page->catalog_.MarkInstalled(pkg.id, false);
-                        }
+                        // winget shows raw "ARP\..." / "MSIX\..." ids for installs
+                        // it can't map to a source package (Chrome and Edge do
+                        // this), so ids alone miss them - fall back to display
+                        // names: exact match, or "<name> (something)".
+                        std::unordered_set<std::string> installedIds;
+                        std::vector<std::string> installedNames;
                         for (const auto& inst : *listed) {
-                            page->catalog_.MarkInstalled(inst.id, true);
+                            installedIds.insert(AsciiLower(inst.id));
+                            installedNames.push_back(AsciiLower(inst.name));
                         }
+                        size_t found = 0;
                         for (const auto& pkg : page->catalog_.All()) {
-                            if (pkg.installed) ++found;
+                            const auto idKey = AsciiLower(pkg.id);
+                            const auto nameKey = AsciiLower(pkg.name);
+                            const auto namePrefix = nameKey + " (";
+                            bool installed = installedIds.contains(idKey);
+                            if (!installed) {
+                                for (const auto& name : installedNames) {
+                                    if (name == nameKey || name.starts_with(namePrefix)) {
+                                        installed = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            page->catalog_.MarkInstalled(pkg.id, installed);
+                            if (installed) ++found;
                         }
                         // Re-render so the "installed" badges show up.
                         page->RebuildCatalog();
