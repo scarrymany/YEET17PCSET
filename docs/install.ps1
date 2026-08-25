@@ -13,6 +13,22 @@ Write-Host "  https://github.com/$repo"
 Write-Host ''
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# The app is an unpackaged WinUI 3 binary: it needs the Windows App Runtime
+# 1.6 framework packages, or it dies at startup with 0x80070016.
+$runtime = Get-AppxPackage -Name 'Microsoft.WindowsAppRuntime.1.6*' -ErrorAction SilentlyContinue
+if (-not $runtime) {
+    Write-Host '  Installing Windows App Runtime 1.6...'
+    $rtPath = Join-Path $env:TEMP 'windowsappruntimeinstall-x64.exe'
+    Invoke-WebRequest 'https://aka.ms/windowsappsdk/1.6/latest/windowsappruntimeinstall-x64.exe' `
+        -OutFile $rtPath -UseBasicParsing
+    $rt = Start-Process $rtPath -ArgumentList '--quiet' -Wait -PassThru
+    Remove-Item $rtPath -ErrorAction SilentlyContinue
+    if ($rt.ExitCode -ne 0) {
+        Write-Host "  Warning: runtime installer exited with code $($rt.ExitCode)" -ForegroundColor Yellow
+    }
+}
+
 $release = Invoke-RestMethod "https://api.github.com/repos/$repo/releases/latest" `
     -Headers @{ 'User-Agent' = 'YEET17PCSET-Install' }
 $tag = $release.tag_name
