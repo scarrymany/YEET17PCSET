@@ -52,6 +52,9 @@ private:
 #if __has_include("modules/install/WingetClient.h")
     void RunOnSelected(::yeet17::install::PackageAction action);
 #endif
+#if __has_include("modules/install/WingetClient.h") && __has_include("modules/install/PackageCatalog.h")
+    void StartInstalledScan(bool announce);
+#endif
 
 #if __has_include("modules/install/PackageCatalog.h")
     ::yeet17::install::PackageCatalog catalog_;

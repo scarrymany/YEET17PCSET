@@ -10,8 +10,24 @@
       "name": "Разработка"
     },
     {
+      "id": "drivers",
+      "name": "Драйвера и библиотеки"
+    },
+    {
       "id": "utilities",
       "name": "Утилиты"
+    },
+    {
+      "id": "network",
+      "name": "Сеть и удалёнка"
+    },
+    {
+      "id": "security",
+      "name": "Безопасность"
+    },
+    {
+      "id": "graphics",
+      "name": "Графика"
     },
     {
       "id": "communication",
@@ -23,7 +39,7 @@
     },
     {
       "id": "office",
-      "name": "Офис"
+      "name": "Офис и облака"
     },
     {
       "id": "gaming",
@@ -122,6 +138,120 @@
       "category": "development"
     },
     {
+      "id": "Microsoft.WindowsTerminal",
+      "name": "Windows Terminal",
+      "description": "Современный терминал Windows с вкладками",
+      "category": "development"
+    },
+    {
+      "id": "Microsoft.PowerShell",
+      "name": "PowerShell 7",
+      "description": "Кроссплатформенный PowerShell нового поколения",
+      "category": "development"
+    },
+    {
+      "id": "Microsoft.VCRedist.2005.x86",
+      "name": "Visual C++ 2005 (x86)",
+      "description": "Библиотеки VC++ 2005 для старых программ",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2005.x64",
+      "name": "Visual C++ 2005 (x64)",
+      "description": "Библиотеки VC++ 2005 для старых программ",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2008.x86",
+      "name": "Visual C++ 2008 (x86)",
+      "description": "Библиотеки VC++ 2008",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2008.x64",
+      "name": "Visual C++ 2008 (x64)",
+      "description": "Библиотеки VC++ 2008",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2010.x86",
+      "name": "Visual C++ 2010 (x86)",
+      "description": "Библиотеки VC++ 2010",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2010.x64",
+      "name": "Visual C++ 2010 (x64)",
+      "description": "Библиотеки VC++ 2010",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2012.x86",
+      "name": "Visual C++ 2012 (x86)",
+      "description": "Библиотеки VC++ 2012",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2012.x64",
+      "name": "Visual C++ 2012 (x64)",
+      "description": "Библиотеки VC++ 2012",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2013.x86",
+      "name": "Visual C++ 2013 (x86)",
+      "description": "Библиотеки VC++ 2013",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2013.x64",
+      "name": "Visual C++ 2013 (x64)",
+      "description": "Библиотеки VC++ 2013",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2015+.x86",
+      "name": "Visual C++ 2015-2022 (x86)",
+      "description": "Актуальные библиотеки VC++, нужны почти всем играм и программам",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.VCRedist.2015+.x64",
+      "name": "Visual C++ 2015-2022 (x64)",
+      "description": "Актуальные библиотеки VC++, нужны почти всем играм и программам",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.DirectX",
+      "name": "DirectX End-User Runtime",
+      "description": "Старые DirectX-библиотеки для игр (d3dx9 и т.п.)",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.DotNet.DesktopRuntime.8",
+      "name": ".NET Desktop Runtime 8",
+      "description": "Рантайм для приложений на .NET 8",
+      "category": "drivers"
+    },
+    {
+      "id": "Microsoft.DotNet.DesktopRuntime.9",
+      "name": ".NET Desktop Runtime 9",
+      "description": "Рантайм для приложений на .NET 9",
+      "category": "drivers"
+    },
+    {
+      "id": "EclipseAdoptium.Temurin.21.JDK",
+      "name": "Temurin JDK 21",
+      "description": "Java 21 (OpenJDK от Eclipse Adoptium)",
+      "category": "drivers"
+    },
+    {
+      "id": "Wagnardsoft.DisplayDriverUninstaller",
+      "name": "Display Driver Uninstaller",
+      "description": "Чистое удаление видеодрайверов (DDU)",
+      "category": "drivers"
+    },
+    {
       "id": "7zip.7zip",
       "name": "7-Zip",
       "description": "Архиватор 7-Zip",
@@ -170,6 +300,138 @@
       "category": "utilities"
     },
     {
+      "id": "TechPowerUp.GPU-Z",
+      "name": "GPU-Z",
+      "description": "Полная информация о видеокарте",
+      "category": "utilities"
+    },
+    {
+      "id": "JAMSoftware.TreeSize.Free",
+      "name": "TreeSize Free",
+      "description": "Кто занял место на диске - по папкам",
+      "category": "utilities"
+    },
+    {
+      "id": "WinDirStat.WinDirStat",
+      "name": "WinDirStat",
+      "description": "Визуальная карта занятого места на диске",
+      "category": "utilities"
+    },
+    {
+      "id": "RevoUninstaller.RevoUninstaller",
+      "name": "Revo Uninstaller",
+      "description": "Полное удаление программ с чисткой хвостов",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.Sysinternals.ProcessExplorer",
+      "name": "Process Explorer",
+      "description": "Продвинутый диспетчер задач от Sysinternals",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.Sysinternals.Autoruns",
+      "name": "Autoruns",
+      "description": "Всё, что стартует с Windows - от Sysinternals",
+      "category": "utilities"
+    },
+    {
+      "id": "qBittorrent.qBittorrent",
+      "name": "qBittorrent",
+      "description": "Торрент-клиент без рекламы",
+      "category": "network"
+    },
+    {
+      "id": "SoftDeluxe.FreeDownloadManager",
+      "name": "Free Download Manager",
+      "description": "Менеджер загрузок с ускорением",
+      "category": "network"
+    },
+    {
+      "id": "AnyDesk.AnyDesk",
+      "name": "AnyDesk",
+      "description": "Быстрый удалённый доступ к ПК",
+      "category": "network"
+    },
+    {
+      "id": "TeamViewer.TeamViewer",
+      "name": "TeamViewer",
+      "description": "Классика удалённого доступа",
+      "category": "network"
+    },
+    {
+      "id": "RustDesk.RustDesk",
+      "name": "RustDesk",
+      "description": "Открытая альтернатива TeamViewer",
+      "category": "network"
+    },
+    {
+      "id": "PuTTY.PuTTY",
+      "name": "PuTTY",
+      "description": "SSH и Telnet клиент",
+      "category": "network"
+    },
+    {
+      "id": "WinSCP.WinSCP",
+      "name": "WinSCP",
+      "description": "SFTP/SCP клиент с двумя панелями",
+      "category": "network"
+    },
+    {
+      "id": "FileZilla.FileZilla",
+      "name": "FileZilla",
+      "description": "FTP/SFTP клиент",
+      "category": "network"
+    },
+    {
+      "id": "Bitwarden.Bitwarden",
+      "name": "Bitwarden",
+      "description": "Облачный менеджер паролей с открытым кодом",
+      "category": "security"
+    },
+    {
+      "id": "KeePassXCTeam.KeePassXC",
+      "name": "KeePassXC",
+      "description": "Локальный менеджер паролей",
+      "category": "security"
+    },
+    {
+      "id": "Proton.ProtonVPN",
+      "name": "Proton VPN",
+      "description": "VPN с бесплатным тарифом от Proton",
+      "category": "security"
+    },
+    {
+      "id": "WireGuard.WireGuard",
+      "name": "WireGuard",
+      "description": "Быстрый современный VPN-протокол и клиент",
+      "category": "security"
+    },
+    {
+      "id": "GIMP.GIMP",
+      "name": "GIMP",
+      "description": "Бесплатный фоторедактор уровня Photoshop",
+      "category": "graphics"
+    },
+    {
+      "id": "Inkscape.Inkscape",
+      "name": "Inkscape",
+      "description": "Векторный редактор (SVG)",
+      "category": "graphics"
+    },
+    {
+      "id": "dotPDN.PaintDotNet",
+      "name": "Paint.NET",
+      "description": "Простой и быстрый редактор изображений",
+      "category": "graphics"
+    },
+    {
+      "id": "IrfanSkiljan.IrfanView",
+      "name": "IrfanView",
+      "description": "Молниеносный просмотрщик картинок",
+      "category": "graphics"
+    },
+    {
       "id": "Telegram.TelegramDesktop",
       "name": "Telegram",
       "description": "Мессенджер Telegram для ПК",
@@ -213,9 +475,57 @@
       "category": "media"
     },
     {
+      "id": "OBSProject.OBSStudio",
+      "name": "OBS Studio",
+      "description": "Запись экрана и стриминг",
+      "category": "media"
+    },
+    {
+      "id": "Audacity.Audacity",
+      "name": "Audacity",
+      "description": "Аудиоредактор",
+      "category": "media"
+    },
+    {
+      "id": "HandBrake.HandBrake",
+      "name": "HandBrake",
+      "description": "Конвертер видео",
+      "category": "media"
+    },
+    {
+      "id": "Gyan.FFmpeg",
+      "name": "FFmpeg",
+      "description": "Универсальный видео/аудио инструмент (CLI)",
+      "category": "media"
+    },
+    {
       "id": "TheDocumentFoundation.LibreOffice",
       "name": "LibreOffice",
       "description": "Офисный пакет LibreOffice",
+      "category": "office"
+    },
+    {
+      "id": "SumatraPDF.SumatraPDF",
+      "name": "Sumatra PDF",
+      "description": "Лёгкий просмотрщик PDF, EPUB, DjVu",
+      "category": "office"
+    },
+    {
+      "id": "Obsidian.Obsidian",
+      "name": "Obsidian",
+      "description": "База заметок и знаний в Markdown",
+      "category": "office"
+    },
+    {
+      "id": "Google.GoogleDrive",
+      "name": "Google Drive",
+      "description": "Облако Google на рабочем столе",
+      "category": "office"
+    },
+    {
+      "id": "Dropbox.Dropbox",
+      "name": "Dropbox",
+      "description": "Облачное хранилище Dropbox",
       "category": "office"
     },
     {
@@ -228,6 +538,18 @@
       "id": "EpicGames.EpicGamesLauncher",
       "name": "Epic Games Launcher",
       "description": "Лаунчер Epic Games",
+      "category": "gaming"
+    },
+    {
+      "id": "Guru3D.Afterburner",
+      "name": "MSI Afterburner",
+      "description": "Мониторинг и разгон видеокарты, оверлей FPS",
+      "category": "gaming"
+    },
+    {
+      "id": "Playnite.Playnite",
+      "name": "Playnite",
+      "description": "Единая библиотека игр из всех лаунчеров",
       "category": "gaming"
     }
   ]

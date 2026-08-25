@@ -99,6 +99,25 @@ int RunHiddenPowerShell(const std::wstring& command) {
     return exitCode;
 }
 
+// Green "installed" pill. Colors are hardcoded midtones readable on both
+// themes: a theme-dictionary lookup here would freeze the build-time theme
+// (the tooltip icon had exactly that bug).
+UIElement InstalledBadge() {
+    Border badge;
+    badge.CornerRadius(winrt::Microsoft::UI::Xaml::CornerRadius{8, 8, 8, 8});
+    badge.Padding(Thickness{8, 1, 8, 2});
+    badge.VerticalAlignment(VerticalAlignment::Center);
+    badge.Background(winrt::Microsoft::UI::Xaml::Media::SolidColorBrush{
+        winrt::Windows::UI::Color{0x2E, 0x3F, 0xB9, 0x50}});
+    TextBlock label;
+    label.Text(L"установлено");
+    label.FontSize(11);
+    label.Foreground(winrt::Microsoft::UI::Xaml::Media::SolidColorBrush{
+        winrt::Windows::UI::Color{0xFF, 0x4C, 0xB8, 0x5C}});
+    badge.Child(label);
+    return badge;
+}
+
 // Icon image (catalog/icons/<id>.png) or a same-size spacer so rows with and
 // without an icon (custom packages) keep their text aligned.
 UIElement PackageIconElement(const std::string& packageId) {
@@ -143,6 +162,11 @@ InstallPage::InstallPage() {
     if (!catalog_.Loaded()) {
         AppendLog(::yeet17::core::Localization::Instance().Get("CatalogMissing"));
     }
+#endif
+#if __has_include("modules/install/WingetClient.h") && __has_include("modules/install/PackageCatalog.h")
+    // Quiet scan at startup so already-installed packages are badged
+    // without the user pressing the refresh button.
+    StartInstalledScan(false);
 #endif
 }
 
@@ -241,6 +265,9 @@ void InstallPage::RebuildCatalog() {
             descText.VerticalAlignment(VerticalAlignment::Center);
             rowContent.Children().Append(descText);
         }
+        if (pkg.installed) {
+            rowContent.Children().Append(InstalledBadge());
+        }
         box.Content(rowContent);
         box.IsChecked(pkg.selected);
         box.Tag(box_value(::yeet17::core::Utf8ToWide(pkg.id)));
@@ -278,6 +305,20 @@ void InstallPage::RunOnSelected(::yeet17::install::PackageAction action) {
     auto selected = catalog_.Selected();
     if (selected.empty()) {
         return;
+    }
+    if (action == ::yeet17::install::PackageAction::Install) {
+        // Skip what the installed-scan already found: no point reinstalling.
+        std::erase_if(selected, [this](const ::yeet17::install::Package& pkg) {
+            if (pkg.installed) {
+                AppendLog(pkg.name + ": уже установлено, пропускаю");
+                return true;
+            }
+            return false;
+        });
+        if (selected.empty()) {
+            AppendLog("Всё выбранное уже установлено");
+            return;
+        }
     }
     if (!winget_.Available()) {
         AppendLog(::yeet17::core::Localization::Instance().Get("WingetMissing"));
@@ -373,6 +414,8 @@ void InstallPage::RunOnSelected(::yeet17::install::PackageAction action) {
                 if (auto page = weak.get()) {
                     if (!result) page->AppendLog(result.error());
                     page->SetBusy(false);
+                    // Refresh the installed badges to reflect what just changed.
+                    page->StartInstalledScan(false);
                 }
             });
         }
@@ -399,12 +442,22 @@ void InstallPage::Uninstall_Click(IInspectable const&, RoutedEventArgs const&) {
 
 void InstallPage::Refresh_Click(IInspectable const&, RoutedEventArgs const&) {
 #if __has_include("modules/install/WingetClient.h") && __has_include("modules/install/PackageCatalog.h")
+    StartInstalledScan(true);
+#endif
+}
+
+#if __has_include("modules/install/WingetClient.h") && __has_include("modules/install/PackageCatalog.h")
+void InstallPage::StartInstalledScan(bool announce) {
     if (!winget_.Available()) {
-        AppendLog(::yeet17::core::Localization::Instance().Get("WingetMissing"));
+        if (announce) {
+            AppendLog(::yeet17::core::Localization::Instance().Get("WingetMissing"));
+        }
         return;
     }
     SetBusy(true);
-    AppendLog(::yeet17::core::Localization::Instance().Get("InProgress"));
+    if (announce) {
+        AppendLog(::yeet17::core::Localization::Instance().Get("InProgress"));
+    }
     if (cancel_) {
         cancel_->store(true);
     }
@@ -420,32 +473,45 @@ void InstallPage::Refresh_Click(IInspectable const&, RoutedEventArgs const&) {
     auto cancel = cancel_;
     auto client = inflight_;
     auto weak = get_weak();
-    worker_ = std::thread([weak, cancel, client]() {
+    worker_ = std::thread([weak, cancel, client, announce]() {
         auto listed = client->ListInstalled();
         if (cancel && cancel->load()) {
             return;
         }
         if (auto self = weak.get()) {
-            self->DispatcherQueue().TryEnqueue([weak, cancel, listed] {
+            self->DispatcherQueue().TryEnqueue([weak, cancel, listed, announce] {
                 if (cancel && cancel->load()) {
                     return;
                 }
                 if (auto page = weak.get()) {
                     if (!listed) {
-                        page->AppendLog(listed.error());
+                        if (announce) {
+                            page->AppendLog(listed.error());
+                        }
                     } else {
+                        size_t found = 0;
+                        // Full resync: clears stale flags after an uninstall.
+                        for (const auto& pkg : page->catalog_.All()) {
+                            page->catalog_.MarkInstalled(pkg.id, false);
+                        }
                         for (const auto& inst : *listed) {
                             page->catalog_.MarkInstalled(inst.id, true);
                         }
-                        page->AppendLog(::yeet17::core::Localization::Instance().Get("Done"));
+                        for (const auto& pkg : page->catalog_.All()) {
+                            if (pkg.installed) ++found;
+                        }
+                        // Re-render so the "installed" badges show up.
+                        page->RebuildCatalog();
+                        page->AppendLog("Обнаружено установленных из каталога: " +
+                                        std::to_string(found));
                     }
                     page->SetBusy(false);
                 }
             });
         }
     });
-#endif
 }
+#endif
 
 void InstallPage::CaptureTo(::yeet17::persistence::Preset& preset) const {
 #if __has_include("modules/install/PackageCatalog.h")

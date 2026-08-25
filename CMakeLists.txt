@@ -6,7 +6,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Built only on Windows (VS 2022 + Windows App SDK). Sources are readable on Linux
 # because every Win32 / WinRT call is behind #ifdef _WIN32.
 project(YEET17PCSET
-    VERSION 1.0.5
+    VERSION 1.0.6
     DESCRIPTION "YEET17PCSET — Настройка Windows"
     LANGUAGES CXX
 )
