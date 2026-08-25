@@ -31,9 +31,21 @@ C++23 · WinUI 3 · Mica · без Electron, без WebView, без скрипт
 |---|---|
 | <img src="docs/screenshot-tweaks-dark.png" width="400"/> | <img src="docs/screenshot-tweaks-light.png" width="400"/> |
 
-## Скачать
+## Установка
 
-Готовые сборки — на [странице релизов](https://github.com/scarrymany/YEET17PCSET/releases/latest): архив `YEET17PCSET-win-x64.zip`, распаковать в любую папку и запустить `YEET17PCSET.exe` (нужен установленный Windows App Runtime 1.6). Дальше приложение обновляется само.
+Одной командой в PowerShell:
+
+```powershell
+irm https://scarrymany.github.io/YEET17PCSET/install.ps1 | iex
+```
+
+Скрипт скачивает свежий релиз и ставит MSI (Program Files, ярлык в «Пуске», корректное удаление через «Программы и компоненты»). Запасная команда, если Pages недоступен:
+
+```powershell
+irm https://raw.githubusercontent.com/scarrymany/YEET17PCSET/main/docs/install.ps1 | iex
+```
+
+Вручную — на [странице релизов](https://github.com/scarrymany/YEET17PCSET/releases/latest): `YEET17PCSET-win-x64.msi` (инсталлер) или `YEET17PCSET-win-x64.zip` (портативно: распаковать и запустить `YEET17PCSET.exe`). Нужен установленный Windows App Runtime 1.6. Дальше приложение обновляется само.
 
 ---
 
