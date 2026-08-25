@@ -1,0 +1,64 @@
+<Page
+    x:Class="yeet17.ConfigPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
+
+    <ScrollViewer Padding="20,14,20,14">
+        <StackPanel Spacing="4">
+            <TextBlock Text="Система" Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Компоненты Windows и исправления" Style="{StaticResource CaptionStyle}" Margin="0,2,0,12"/>
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE713;" Style="{StaticResource CardIconStyle}"/>
+                        <TextBlock Text="Компоненты Windows" Style="{StaticResource CardHeaderStyle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Включение и отключение необязательных компонентов через DISM. Перезагрузка может понадобиться позже."
+                               Style="{StaticResource CaptionStyle}"/>
+                    <StackPanel x:Name="FeaturesHost"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE90F;" Style="{StaticResource CardIconStyle}"/>
+                        <TextBlock Text="Ремонт" Style="{StaticResource CardHeaderStyle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Каждая кнопка открывает видимую консоль. Никаких скрытых служб."
+                               Style="{StaticResource CaptionStyle}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Сброс сети" Tag="network" Style="{StaticResource GhostButtonStyle}" Click="Repair_Click"/>
+                        <Button Content="Сброс Windows Update" Tag="wu" Style="{StaticResource GhostButtonStyle}" Click="Repair_Click"/>
+                        <Button Content="SFC + DISM" Tag="sfc" Style="{StaticResource GhostButtonStyle}" Click="Repair_Click"/>
+                        <Button Content="Восстановить Winget" Tag="winget" Style="{StaticResource AccentButtonStyle}" Click="Repair_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE770;" Style="{StaticResource CardIconStyle}"/>
+                        <TextBlock Text="Классические оснастки" Style="{StaticResource CardHeaderStyle}"/>
+                    </StackPanel>
+                    <TextBlock Text="Запуск штатных окон Windows — без подмены и перехвата."
+                               Style="{StaticResource CaptionStyle}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="0">
+                        <Button Content="Панель управления" Tag="control" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                        <Button Content="Программы и компоненты" Tag="appwiz" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                        <Button Content="Службы" Tag="services" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                        <Button Content="Сеть" Tag="ncpa" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                        <Button Content="Питание" Tag="powercfg" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                        <Button Content="Брандмауэр" Tag="firewall" Style="{StaticResource ChipButtonStyle}" Click="Legacy_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="ЖУРНАЛ" Style="{StaticResource SectionLabelStyle}" Margin="0,8,0,6"/>
+            <TextBox x:Name="LogBox" Style="{StaticResource LogBoxStyle}" MaxHeight="140"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

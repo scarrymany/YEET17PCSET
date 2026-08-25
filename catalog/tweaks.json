@@ -1,0 +1,703 @@
+{
+  "version": 1,
+  "tweaks": [
+    {
+      "id": "telemetry.disable",
+      "title": "Ограничить телеметрию",
+      "description": "Ставит уровень диагностики на «Базовый» (1). На Home/Pro значение 0 всё равно приводится к 1 — Security недоступен. Защитник не трогаем.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+          "name": "AllowTelemetry",
+          "valueType": "dword",
+          "value": 1
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+          "name": "AllowTelemetry",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "telemetry.ceip",
+      "title": "Отключить программу улучшения качества",
+      "description": "Выключает CEIP (опросы и отправку данных об использовании). Обратимо.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows",
+          "name": "CEIPEnable",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "telemetry.feedback",
+      "title": "Не показывать опросы отзывов",
+      "description": "Скрывает уведомления «Оцените Windows» и обнуляет счётчик опросов SIUF.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+          "name": "DoNotShowFeedbackNotifications",
+          "valueType": "dword",
+          "value": 1
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Siuf\\Rules",
+          "name": "NumberOfSIUFInPeriod",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "privacy.advertising",
+      "title": "Отключить рекламный идентификатор",
+      "description": "Выключает Advertising ID для текущего пользователя и политикой для машины.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+          "name": "Enabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+          "name": "DisabledByGroupPolicy",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "privacy.tailored",
+      "title": "Отключить подбор по диагностике",
+      "description": "Не использовать диагностические данные для персональных предложений.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+          "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "privacy.suggestions",
+      "title": "Убрать предложения и рекламу",
+      "description": "Отключает подсказки в проводнике, тихие установки и потребительские функции Windows.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SystemPaneSuggestionsEnabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SoftLandingEnabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SilentInstalledAppsEnabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338393Enabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-353694Enabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-353696Enabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+          "name": "DisableWindowsConsumerFeatures",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "privacy.ink",
+      "title": "Не собирать данные ввода",
+      "description": "Запрещает неявный сбор рукописного и текстового ввода для персонализации.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\InputPersonalization",
+          "name": "RestrictImplicitInkCollection",
+          "valueType": "dword",
+          "value": 1
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\InputPersonalization",
+          "name": "RestrictImplicitTextCollection",
+          "valueType": "dword",
+          "value": 1
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Personalization\\Settings",
+          "name": "AcceptedPrivacyPolicy",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "privacy.activity",
+      "title": "Отключить журнал активности",
+      "description": "Не публиковать и не выгружать историю активности на устройство и в облако.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "EnableActivityFeed",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "PublishUserActivities",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "UploadUserActivities",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "copilot.taskbar",
+      "title": "Скрыть Copilot на панели задач",
+      "description": "Убирает кнопку Copilot. Сам помощник не блокируется политикой — это отдельный твик.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ShowCopilotButton",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "widgets.taskbar",
+      "title": "Скрыть виджеты на панели задач",
+      "description": "Убирает иконку виджетов (новости и интересы) с панели. Нужен перезапуск проводника.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "TaskbarDa",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "explorer.classic_menu",
+      "title": "Классическое контекстное меню",
+      "description": "Возвращает старое меню Проводника Windows 11 без «Показать дополнительные параметры». Нужен перезапуск проводника.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32",
+          "name": "",
+          "valueType": "sz",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "explorer.file_ext",
+      "title": "Показывать расширения файлов",
+      "description": "Всегда видно .exe / .txt / .jpg — меньше шанс запустить маскированный файл.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "HideFileExt",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "explorer.hidden",
+      "title": "Показывать скрытые файлы",
+      "description": "Отображает скрытые файлы и папки в Проводнике.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Hidden",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "explorer.compact",
+      "title": "Компактный вид Проводника",
+      "description": "Уменьшает отступы в Проводнике Windows 11 (UseCompactMode).",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "UseCompactMode",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "ui.start_recommendations",
+      "title": "Убрать рекомендации в «Пуск»",
+      "description": "Отключает рекламные рекомендации в меню Пуск Windows 11.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Start_IrisRecommendations",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "ui.lockscreen_spotlight",
+      "title": "Отключить Spotlight на блокировке",
+      "description": "Статичный экран блокировки без рекламы и подборок Windows Spotlight.",
+      "group": "essential",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenEnabled",
+          "valueType": "dword",
+          "value": 0
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenOverlayEnabled",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "telemetry.diagtrack",
+      "title": "Остановить службу телеметрии",
+      "description": "Останавливает и отключает DiagTrack и dmwappushservice. Защитник не трогаем. Обратимо.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "DiagTrack"
+        },
+        {
+          "kind": "service.disable",
+          "service": "DiagTrack"
+        },
+        {
+          "kind": "service.stop",
+          "service": "dmwappushservice"
+        },
+        {
+          "kind": "service.disable",
+          "service": "dmwappushservice"
+        }
+      ]
+    },
+    {
+      "id": "copilot.disable",
+      "title": "Отключить Windows Copilot",
+      "description": "Политика TurnOffWindowsCopilot для машины и пользователя. Может понадобиться перезагрузка.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "name": "TurnOffWindowsCopilot",
+          "valueType": "dword",
+          "value": 1
+        },
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "name": "TurnOffWindowsCopilot",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "widgets.disable",
+      "title": "Отключить новости и виджеты",
+      "description": "Политика AllowNewsAndInterests=0. Полностью гасит панель виджетов, не только иконку.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Dsh",
+          "name": "AllowNewsAndInterests",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "cortana.disable",
+      "title": "Отключить Cortana",
+      "description": "Политика AllowCortana=0. Поиск Windows остаётся.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "name": "AllowCortana",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "services.remoteregistry",
+      "title": "Отключить Remote Registry",
+      "description": "Закрывает удалённый доступ к реестру. На домашнем ПК обычно не нужен.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "RemoteRegistry"
+        },
+        {
+          "kind": "service.disable",
+          "service": "RemoteRegistry"
+        }
+      ]
+    },
+    {
+      "id": "services.fax",
+      "title": "Отключить службу факса",
+      "description": "Факс на современных ПК не используется. Обратимо.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "Fax"
+        },
+        {
+          "kind": "service.disable",
+          "service": "Fax"
+        }
+      ]
+    },
+    {
+      "id": "power.fast_startup",
+      "title": "Отключить быстрый запуск",
+      "description": "Выключает Hiberboot. Чище выключение, чуть дольше загрузка. Обратимо, лучше перезагрузка.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power",
+          "name": "HiberbootEnabled",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "ui.search_hide",
+      "title": "Скрыть поиск на панели задач",
+      "description": "Убирает поле/иконку поиска с панели. Поиск Win+S остаётся.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Search",
+          "name": "SearchboxTaskbarMode",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "ui.taskview_hide",
+      "title": "Скрыть «Представление задач»",
+      "description": "Убирает кнопку виртуальных столов с панели. Win+Tab работает.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": false,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKCU",
+          "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ShowTaskViewButton",
+          "valueType": "dword",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "ai.recall",
+      "title": "Отключить Recall",
+      "description": "Политика DisableAIDataAnalysis: не снимать и не анализировать снимки экрана. Нужно подтверждение.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": true,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+          "name": "DisableAIDataAnalysis",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "razer.block",
+      "title": "Блок оверлея Razer",
+      "description": "Отключает только RzActionSvc (Razer Game Manager / оверлей). Synapse, подсветка и макросы не трогаем. Если службы нет — твик не применится, чужой софт не ломаем. Нужно подтверждение.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": true,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "RzActionSvc"
+        },
+        {
+          "kind": "service.disable",
+          "service": "RzActionSvc"
+        }
+      ]
+    },
+    {
+      "id": "services.sysmain",
+      "title": "Отключить SysMain (Superfetch)",
+      "description": "На SSD часто бесполезен, на HDD может замедлить запуск программ. Нужно подтверждение.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": true,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "SysMain"
+        },
+        {
+          "kind": "service.disable",
+          "service": "SysMain"
+        }
+      ]
+    },
+    {
+      "id": "services.wsearch",
+      "title": "Отключить индекс поиска",
+      "description": "Снижает фон, но поиск по содержимому файлов перестанет работать. Только вручную, с подтверждением. Не входит в пресеты.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": true,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "service.stop",
+          "service": "WSearch"
+        },
+        {
+          "kind": "service.disable",
+          "service": "WSearch"
+        }
+      ]
+    },
+    {
+      "id": "privacy.location",
+      "title": "Запретить геолокацию",
+      "description": "Политика DisableLocation. Приложения не получат координаты. Нужно подтверждение.",
+      "group": "advanced",
+      "reversible": true,
+      "requiresConfirm": true,
+      "enabled": false,
+      "operations": [
+        {
+          "kind": "registry.set",
+          "hive": "HKLM",
+          "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors",
+          "name": "DisableLocation",
+          "valueType": "dword",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

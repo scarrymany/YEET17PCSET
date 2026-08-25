@@ -1,0 +1,941 @@
+<Application
+    x:Class="yeet17.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <controls:XamlControlsResources />
+                <!--
+                  Styles inlined on purpose: this is an unpackaged app with no resources.pri
+                  (AppxGeneratePriEnabled=false in Directory.Build.props - the standalone
+                  XamlCompiler.exe pipeline doesn't generate one), so an ms-appx:///-Source
+                  reference to a separate file can't resolve at runtime and fail-fasts deep
+                  inside Microsoft.UI.Xaml.dll instead of throwing a catchable exception.
+
+                  YEET17PCSET visual language - Fluent + Telegram Desktop.
+                  Accent #5B8CFF. Cards CornerRadius 10. Chips are pills (16).
+                  Motion: 150ms hover, 200ms toggle, 240ms page transition, cubic ease-out.
+                -->
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Dark">
+                            <Color x:Key="ToggleOffColor">#5A5A5A</Color>
+                            <Color x:Key="WarningFillColor">#33290A</Color>
+                            <Color x:Key="WarningStrokeColor">#66F5C518</Color>
+                            <Color x:Key="WarningTextColor">#F0C623</Color>
+                            <Color x:Key="AmbientGlowColor">#245B8CFF</Color>
+                            <!-- Brand accent instead of the OS accent for checkbox / radio /
+                                 slider / progress. ThemeResource lookups from control templates
+                                 walk up to app-level theme dictionaries, so overriding the
+                                 common accent brushes here recolors the stock controls. -->
+                            <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#5B8CFF"/>
+                            <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#5B8CFF" Opacity="0.9"/>
+                            <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#5B8CFF" Opacity="0.8"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#9AB6FF"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#B9CCFF"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#7BA0FF"/>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Light">
+                            <Color x:Key="ToggleOffColor">#D0D0D0</Color>
+                            <Color x:Key="WarningFillColor">#FFF4CC</Color>
+                            <Color x:Key="WarningStrokeColor">#E6B800</Color>
+                            <Color x:Key="WarningTextColor">#5C4A00</Color>
+                            <Color x:Key="AmbientGlowColor">#1F5B8CFF</Color>
+                            <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#4A78E6"/>
+                            <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#4A78E6" Opacity="0.9"/>
+                            <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#4A78E6" Opacity="0.8"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#3A64C7"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#2B4FA3"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#4A78E6"/>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Default">
+                            <Color x:Key="ToggleOffColor">#D0D0D0</Color>
+                            <Color x:Key="WarningFillColor">#FFF4CC</Color>
+                            <Color x:Key="WarningStrokeColor">#E6B800</Color>
+                            <Color x:Key="WarningTextColor">#5C4A00</Color>
+                            <Color x:Key="AmbientGlowColor">#1F5B8CFF</Color>
+                            <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#4A78E6"/>
+                            <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#4A78E6" Opacity="0.9"/>
+                            <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#4A78E6" Opacity="0.8"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#3A64C7"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#2B4FA3"/>
+                            <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#4A78E6"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+
+                    <FontFamily x:Key="AppFontFamily">Segoe UI Variable Text, Segoe UI</FontFamily>
+                    <FontFamily x:Key="AppDisplayFontFamily">Segoe UI Variable Display, Segoe UI</FontFamily>
+                    <FontFamily x:Key="AppMonoFontFamily">Cascadia Mono, Consolas, Segoe UI Variable Text</FontFamily>
+                    <FontFamily x:Key="AppIconFontFamily">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+                    <Color x:Key="YeetAccentColor">#5B8CFF</Color>
+                    <Color x:Key="YeetAccentColorLight">#7BA5FF</Color>
+                    <Color x:Key="YeetAccentColorPressed">#4A78E6</Color>
+                    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource YeetAccentColor}"/>
+                    <SolidColorBrush x:Key="AccentBrushPressed" Color="{StaticResource YeetAccentColorPressed}"/>
+                    <SolidColorBrush x:Key="AccentSubtleBrush" Color="{StaticResource YeetAccentColor}" Opacity="0.14"/>
+                    <SolidColorBrush x:Key="AccentRingBrush" Color="{StaticResource YeetAccentColor}" Opacity="0.55"/>
+                    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#6D9AFF" Offset="0"/>
+                        <GradientStop Color="#4E7FF2" Offset="1"/>
+                    </LinearGradientBrush>
+
+                    <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="{StaticResource YeetAccentColor}"/>
+                    <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"/>
+                    <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent"/>
+                    <x:Double x:Key="NavigationViewSelectionIndicatorWidth">4</x:Double>
+                    <x:Double x:Key="NavigationViewSelectionIndicatorHeight">16</x:Double>
+
+                    <CornerRadius x:Key="CardRadius">10</CornerRadius>
+                    <CornerRadius x:Key="CardCornerRadius">10</CornerRadius>
+                    <CornerRadius x:Key="ChipRadius">16</CornerRadius>
+                    <CornerRadius x:Key="ControlRadius">6</CornerRadius>
+                    <CornerRadius x:Key="NavItemCornerRadius">8</CornerRadius>
+                    <Thickness x:Key="CardPadding">16</Thickness>
+                    <Thickness x:Key="PageHeaderMargin">20,16,20,8</Thickness>
+                    <Thickness x:Key="PageContentPadding">20,4,20,4</Thickness>
+
+                    <SolidColorBrush x:Key="ToggleOffBrush" Color="{ThemeResource ToggleOffColor}"/>
+                    <SolidColorBrush x:Key="WarningFillBrush" Color="{ThemeResource WarningFillColor}"/>
+                    <SolidColorBrush x:Key="WarningStrokeBrush" Color="{ThemeResource WarningStrokeColor}"/>
+                    <SolidColorBrush x:Key="WarningTextBrush" Color="{ThemeResource WarningTextColor}"/>
+
+                    <!-- ============================ Typography ============================ -->
+
+                    <Style x:Key="TitleBarTextStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+
+                    <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppDisplayFontFamily}"/>
+                        <Setter Property="FontSize" Value="24"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    </Style>
+
+                    <Style x:Key="SectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource PageTitleStyle}"/>
+
+                    <Style x:Key="SectionLabelStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <Setter Property="CharacterSpacing" Value="60"/>
+                    </Style>
+
+                    <Style x:Key="CardHeaderStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+
+                    <Style x:Key="CaptionStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                    </Style>
+
+                    <Style x:Key="BodyStyle" TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                    </Style>
+
+                    <Style x:Key="CardIconStyle" TargetType="FontIcon">
+                        <Setter Property="FontFamily" Value="{StaticResource AppIconFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+
+                    <!-- ============================ Surfaces ============================ -->
+
+                    <Style x:Key="CardStyle" TargetType="Border">
+                        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="Padding" Value="16"/>
+                        <Setter Property="Margin" Value="0,0,0,12"/>
+                    </Style>
+
+                    <Style x:Key="CardControlStyle" TargetType="ContentControl">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ContentControl">
+                                    <Grid>
+                                        <Border CornerRadius="10"
+                                                Margin="0,2,0,0"
+                                                Background="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                Opacity="0.28"/>
+                                        <Border CornerRadius="10"
+                                                Margin="0,0,0,2"
+                                                Padding="16"
+                                                BorderThickness="1"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                                            <ContentPresenter
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="FooterBarStyle" TargetType="Border">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+                        <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                        <Setter Property="MinHeight" Value="56"/>
+                    </Style>
+
+                    <Style x:Key="WarningBannerStyle" TargetType="Border">
+                        <Setter Property="Background" Value="{ThemeResource WarningFillBrush}"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource WarningStrokeBrush}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="Padding" Value="14,10"/>
+                        <Setter Property="Margin" Value="0,0,0,12"/>
+                    </Style>
+
+                    <Style x:Key="LogBoxStyle" TargetType="TextBox">
+                        <Setter Property="IsReadOnly" Value="True"/>
+                        <Setter Property="AcceptsReturn" Value="True"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppMonoFontFamily}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="MinHeight" Value="120"/>
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+                        <Setter Property="PlaceholderText" Value="Журнал операций появится здесь."/>
+                    </Style>
+
+                    <!-- ============================ Buttons ============================ -->
+                    <!--
+                      Custom templates on purpose: the stock Button template swaps its own
+                      background brushes on hover/press, which discards a locally-set accent
+                      Background. Overlay layers + opacity storyboards keep every animation
+                      independent (GPU-driven).
+                    -->
+
+                    <Style x:Key="AccentButtonStyle" TargetType="Button">
+                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="Padding" Value="16,7"/>
+                        <Setter Property="MinHeight" Value="34"/>
+                        <Setter Property="MinWidth" Value="32"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-3"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid x:Name="Root"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          RenderTransformOrigin="0.5,0.5">
+                                        <Grid.RenderTransform>
+                                            <CompositeTransform x:Name="RootScale"/>
+                                        </Grid.RenderTransform>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="0.97" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="0.97" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Border x:Name="Base"
+                                                Background="{StaticResource AccentGradientBrush}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"/>
+                                        <Border x:Name="HoverLayer"
+                                                Background="#22FFFFFF"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <Border x:Name="PressLayer"
+                                                Background="#2E00204D"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <ContentPresenter x:Name="ContentPresenter"
+                                                          Content="{TemplateBinding Content}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          Foreground="{TemplateBinding Foreground}"
+                                                          FontFamily="{TemplateBinding FontFamily}"
+                                                          FontSize="{TemplateBinding FontSize}"
+                                                          FontWeight="{TemplateBinding FontWeight}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="AppAccentButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}"/>
+
+                    <Style x:Key="GhostButtonStyle" TargetType="Button">
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="Padding" Value="14,7"/>
+                        <Setter Property="MinHeight" Value="34"/>
+                        <Setter Property="MinWidth" Value="32"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-3"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid x:Name="Root"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          RenderTransformOrigin="0.5,0.5">
+                                        <Grid.RenderTransform>
+                                            <CompositeTransform x:Name="RootScale"/>
+                                        </Grid.RenderTransform>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="AccentRing" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="AccentRing" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="PressLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="AccentRing" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="0.97" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="0.97" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Border x:Name="Base"
+                                                Background="Transparent"
+                                                BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="{TemplateBinding CornerRadius}"/>
+                                        <Border x:Name="HoverLayer"
+                                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <Border x:Name="PressLayer"
+                                                Background="{ThemeResource SubtleFillColorTertiaryBrush}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <Border x:Name="AccentRing"
+                                                BorderBrush="{StaticResource AccentRingBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <ContentPresenter x:Name="ContentPresenter"
+                                                          Content="{TemplateBinding Content}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          Foreground="{TemplateBinding Foreground}"
+                                                          FontFamily="{TemplateBinding FontFamily}"
+                                                          FontSize="{TemplateBinding FontSize}"
+                                                          FontWeight="{TemplateBinding FontWeight}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="Button">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="MinWidth" Value="32"/>
+                        <Setter Property="Padding" Value="12,6"/>
+                        <Setter Property="CornerRadius" Value="6"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-3"/>
+                    </Style>
+
+                    <Style TargetType="ComboBox">
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="CornerRadius" Value="6"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                    </Style>
+
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="MinHeight" Value="3"/>
+                        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                        <Setter Property="Background" Value="{ThemeResource ControlFillColorSecondaryBrush}"/>
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+
+                    <!-- ============================ Chips ============================ -->
+
+                    <Style x:Key="ChipButtonStyle" TargetType="Button" BasedOn="{StaticResource GhostButtonStyle}">
+                        <Setter Property="CornerRadius" Value="16"/>
+                        <Setter Property="Padding" Value="14,6"/>
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="Margin" Value="0,0,8,0"/>
+                        <Setter Property="FontSize" Value="13"/>
+                    </Style>
+
+                    <Style x:Key="ChipToggleStyle" TargetType="ToggleButton">
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        <Setter Property="CornerRadius" Value="16"/>
+                        <Setter Property="Padding" Value="14,6"/>
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="Margin" Value="0,0,8,8"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-3"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid x:Name="Root"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          RenderTransformOrigin="0.5,0.5">
+                                        <Grid.RenderTransform>
+                                            <CompositeTransform x:Name="RootScale"/>
+                                        </Grid.RenderTransform>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="0.95" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="0.95" Duration="0:0:0.08">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Checked">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="CheckedPointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="CheckedPressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleX" To="0.95" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootScale" Storyboard.TargetProperty="ScaleY" To="0.95" Duration="0:0:0.08"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="CheckedDisabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1"/>
+                                                        <DoubleAnimation Storyboard.TargetName="CheckedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Border x:Name="Base"
+                                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"/>
+                                        <Border x:Name="HoverLayer"
+                                                Background="{ThemeResource SubtleFillColorTertiaryBrush}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <Border x:Name="CheckedLayer"
+                                                Background="{StaticResource AccentSubtleBrush}"
+                                                BorderBrush="{StaticResource AccentRingBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Opacity="0"/>
+                                        <ContentPresenter x:Name="ContentPresenter"
+                                                          Content="{TemplateBinding Content}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          Foreground="{TemplateBinding Foreground}"
+                                                          FontFamily="{TemplateBinding FontFamily}"
+                                                          FontSize="{TemplateBinding FontSize}"
+                                                          FontWeight="{TemplateBinding FontWeight}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="PremiumCheckBoxStyle" TargetType="CheckBox">
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="Padding" Value="8,4,0,0"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                    </Style>
+
+                    <!-- ============================ Navigation ============================ -->
+
+                    <Style TargetType="controls:NavigationViewItem">
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="MinHeight" Value="38"/>
+                        <Setter Property="Margin" Value="4,2"/>
+                        <Setter Property="Padding" Value="12,0"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-2"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="controls:NavigationViewItem">
+                                    <Grid x:Name="LayoutRoot" MinHeight="38" CornerRadius="8" Background="Transparent">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBarScale" Storyboard.TargetProperty="ScaleY" To="0.4" Duration="0:0:0.15"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBar" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBarScale" Storyboard.TargetProperty="ScaleY" To="0.4" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Selected">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.18"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBarScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.22">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOverSelected">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="HoverLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBarScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PressedSelected">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                                    </VisualState.Setters>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBar" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                                                        <DoubleAnimation Storyboard.TargetName="SelectionBarScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.08"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Opacity" To="0.4" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border x:Name="HoverLayer"
+                                                Grid.ColumnSpan="3"
+                                                CornerRadius="8"
+                                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                                Opacity="0"/>
+                                        <Border x:Name="SelectionBar"
+                                                Width="4" Height="18" CornerRadius="2"
+                                                Background="{StaticResource AccentGradientBrush}"
+                                                VerticalAlignment="Center"
+                                                RenderTransformOrigin="0.5,0.5"
+                                                Opacity="0">
+                                            <Border.RenderTransform>
+                                                <CompositeTransform x:Name="SelectionBarScale" ScaleY="0.4"/>
+                                            </Border.RenderTransform>
+                                        </Border>
+                                        <Viewbox Grid.Column="1" Width="16" Height="16" Margin="10,0,10,0">
+                                            <ContentPresenter Content="{TemplateBinding Icon}"/>
+                                        </Viewbox>
+                                        <ContentPresenter x:Name="ContentPresenter"
+                                                          Grid.Column="2"
+                                                          Content="{TemplateBinding Content}"
+                                                          VerticalAlignment="Center"
+                                                          FontFamily="{TemplateBinding FontFamily}"
+                                                          FontSize="{TemplateBinding FontSize}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <!-- ============================ Toggle ============================ -->
+                    <!--
+                      Telegram-style ToggleSwitch: 52x32 track, 28 knob, accent when on.
+                      The knob rides a CompositeTransform, not Canvas.Left: layout-property
+                      animations are dependent and silently never run in WinUI, so the old
+                      Canvas-based template snapped instead of sliding.
+                    -->
+                    <Style x:Key="TelegramToggleStyle" TargetType="ToggleSwitch">
+                        <Setter Property="OnContent" Value=""/>
+                        <Setter Property="OffContent" Value=""/>
+                        <Setter Property="MinWidth" Value="52"/>
+                        <Setter Property="MinHeight" Value="32"/>
+                        <Setter Property="FontFamily" Value="{StaticResource AppFontFamily}"/>
+                        <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2"/>
+                        <Setter Property="FocusVisualMargin" Value="-4"/>
+                        <Setter Property="ManipulationMode" Value="System,TranslateX"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleSwitch">
+                                    <Grid x:Name="RootSwitch" Background="Transparent" MinHeight="32" MinWidth="52">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="SwitchArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                        <DoubleAnimation Storyboard.TargetName="RootSwitch" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="SwitchArea" Storyboard.TargetProperty="Opacity" To="0.92" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="SwitchArea" Storyboard.TargetProperty="Opacity" To="0.85" Duration="0:0:0.08"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="RootSwitch" Storyboard.TargetProperty="Opacity" To="0.4" Duration="0:0:0.12"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="ToggleStates">
+                                                <VisualState x:Name="Off">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="0" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="0" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="OffOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="0" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="0" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="OffPressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="0" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="0" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="On">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="20" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="1" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="OnOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="20" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="1" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="OnPressed">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                                         Storyboard.TargetProperty="TranslateX"
+                                                                         To="20" Duration="0:0:0.20">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetName="OnTrack"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="1" Duration="0:0:0.20"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Dragging"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="ContentStates">
+                                                <VisualState x:Name="OffContent"/>
+                                                <VisualState x:Name="OnContent"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <ContentPresenter
+                                            x:Name="HeaderContentPresenter"
+                                            Content="{TemplateBinding Header}"
+                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                            IsHitTestVisible="False"
+                                            Margin="0,0,0,4"/>
+
+                                        <Grid x:Name="SwitchArea"
+                                              Grid.Row="1"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Width="52"
+                                              Height="32">
+                                            <Border x:Name="OuterBorder"
+                                                    CornerRadius="16"
+                                                    Width="52" Height="32"
+                                                    Background="Transparent"/>
+                                            <Border x:Name="OffTrack"
+                                                    CornerRadius="16"
+                                                    Width="52" Height="32"
+                                                    Background="{ThemeResource ControlFillColorSecondaryBrush}"
+                                                    BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                                    BorderThickness="1"/>
+                                            <Border x:Name="OnTrack"
+                                                    CornerRadius="16"
+                                                    Width="52" Height="32"
+                                                    Background="{StaticResource AccentGradientBrush}"
+                                                    Opacity="0"/>
+                                            <Border x:Name="SwitchKnobBounds"
+                                                    CornerRadius="16"
+                                                    Width="52" Height="32"
+                                                    Background="Transparent"/>
+                                            <Grid x:Name="SwitchKnob" Width="28" Height="28"
+                                                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                  Margin="2,0,0,0">
+                                                <Grid.RenderTransform>
+                                                    <CompositeTransform x:Name="KnobTransform"/>
+                                                </Grid.RenderTransform>
+                                                <Ellipse x:Name="SwitchKnobOn" Width="28" Height="28"
+                                                         Fill="#FFFFFFFF"/>
+                                                <Ellipse x:Name="SwitchKnobOff" Width="28" Height="28"
+                                                         Fill="#FFFFFFFF"/>
+                                            </Grid>
+                                            <Thumb x:Name="SwitchThumb">
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Rectangle Fill="Transparent"/>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Grid>
+                                        <ContentPresenter x:Name="OffContentPresenter"
+                                                          Grid.Row="1"
+                                                          Visibility="Collapsed"
+                                                          Content="{TemplateBinding OffContent}"/>
+                                        <ContentPresenter x:Name="OnContentPresenter"
+                                                          Grid.Row="1"
+                                                          Visibility="Collapsed"
+                                                          Content="{TemplateBinding OnContent}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="ToggleSwitch" BasedOn="{StaticResource TelegramToggleStyle}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

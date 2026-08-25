@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "app": "YEET17PCSET",
+  "id": "minimal",
+  "name": "Минимальный",
+  "title": "Минимальный",
+  "description": "Базовые privacy и telemetry: реклама, опросы, Copilot и виджеты на панели. Без advanced.",
+  "createdAt": "2026-08-25T00:00:00Z",
+  "theme": "system",
+  "packages": [],
+  "tweaks": {
+    "telemetry.disable": true,
+    "telemetry.ceip": true,
+    "telemetry.feedback": true,
+    "privacy.advertising": true,
+    "privacy.tailored": true,
+    "privacy.suggestions": true,
+    "copilot.taskbar": true,
+    "widgets.taskbar": true,
+    "explorer.file_ext": true
+  },
+  "features": {},
+  "updates": {
+    "mode": "default",
+    "pauseDays": 0
+  },
+  "customPackages": []
+}

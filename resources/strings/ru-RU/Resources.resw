@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="AppDisplayName"><value>YEET17PCSET / YEET17 Настройка ПК</value></data>
+  <data name="WindowTitle"><value>YEET17PCSET — Настройка Windows</value></data>
+  <data name="NavInstall"><value>Установка</value></data>
+  <data name="NavTweaks"><value>Твики</value></data>
+  <data name="NavSystem"><value>Система</value></data>
+  <data name="NavUpdates"><value>Обновления</value></data>
+  <data name="Theme"><value>Тема</value></data>
+  <data name="ThemeSystem"><value>Системная</value></data>
+  <data name="ThemeDark"><value>Тёмная</value></data>
+  <data name="ThemeLight"><value>Светлая</value></data>
+  <data name="SaveConfig"><value>Сохранить конфиг</value></data>
+  <data name="LoadConfig"><value>Загрузить конфиг</value></data>
+  <data name="SearchPlaceholder"><value>Поиск программ…</value></data>
+  <data name="InstallSelected"><value>Установить выбранное</value></data>
+  <data name="UpgradeSelected"><value>Обновить</value></data>
+  <data name="UninstallSelected"><value>Удалить</value></data>
+  <data name="RefreshInstalled"><value>Получить установленные</value></data>
+  <data name="Apply"><value>Применить</value></data>
+  <data name="Undo"><value>Отменить</value></data>
+  <data name="PresetMinimal"><value>Минимальный</value></data>
+  <data name="PresetStandard"><value>Стандартный</value></data>
+  <data name="PresetMaximal"><value>Максимальный</value></data>
+  <data name="SectionEssential"><value>Основные</value></data>
+  <data name="SectionAdvanced"><value>Продвинутые</value></data>
+  <data name="AdvancedWarning"><value>Продвинутые твики меняют глубокие политики и службы. Создайте точку восстановления и читайте описание перед применением.</value></data>
+  <data name="RepairNetwork"><value>Сброс сети</value></data>
+  <data name="RepairWu"><value>Сброс Windows Update</value></data>
+  <data name="RepairSfcDism"><value>SFC + DISM</value></data>
+  <data name="RepairWinget"><value>Восстановить Winget</value></data>
+  <data name="UpdateFull"><value>Все обновления</value></data>
+  <data name="UpdateSecurity"><value>Только безопасность</value></data>
+  <data name="UpdatePause"><value>Приостановить</value></data>
+  <data name="UpdateReset"><value>Сбросить к умолчанию</value></data>
+  <data name="NeedAdmin"><value>Требуются права администратора</value></data>
+  <data name="ElevationPrompt"><value>YEET17PCSET меняет политики и службы. Подтвердите повышение прав.</value></data>
+  <data name="RestorePointCaption"><value>Точка восстановления YEET17PCSET</value></data>
+  <data name="ConfirmDangerous"><value>Этот твик помечен как опасный. Продолжить?</value></data>
+  <data name="LogEmpty"><value>Журнал операций появится здесь.</value></data>
+  <data name="CatalogMissing"><value>Каталог не найден рядом с YEET17PCSET.exe</value></data>
+  <data name="WingetMissing"><value>winget.exe не найден. Установите «Установщик приложений» из Microsoft Store.</value></data>
+  <data name="Done"><value>Готово</value></data>
+  <data name="Failed"><value>Ошибка</value></data>
+  <data name="InProgress"><value>Выполняется…</value></data>
+</root>

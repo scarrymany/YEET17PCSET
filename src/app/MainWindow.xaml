@@ -1,0 +1,98 @@
+<Window
+    x:Class="yeet17.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    Title="YEET17PCSET — Настройка Windows">
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!-- Ambient composition layer (arcs + glow) lives behind every control;
+             visuals are attached from code via ElementCompositionPreview. -->
+        <Grid x:Name="AmbientHost" Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False"/>
+
+        <!-- Custom title bar: ExtendsContentIntoTitleBar so Mica/Acrylic paint through. -->
+        <Grid x:Name="AppTitleBar" Grid.Row="0" Padding="16,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                <Border Width="22" Height="22" CornerRadius="7"
+                        Background="{StaticResource AccentGradientBrush}">
+                    <FontIcon Glyph="&#xE945;"
+                              FontFamily="{StaticResource AppIconFontFamily}"
+                              FontSize="11"
+                              Foreground="#FFFFFF"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock x:Name="TitleText"
+                           Text="YEET17PCSET — Настройка Windows"
+                           Style="{StaticResource TitleBarTextStyle}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            <Grid x:Name="TitleBarCaptionPad" Grid.Column="1" Width="140"/>
+        </Grid>
+
+        <controls:NavigationView
+            x:Name="NavView"
+            Grid.Row="1"
+            PaneTitle="Настройка"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            PaneDisplayMode="Left"
+            OpenPaneLength="224"
+            IsTitleBarAutoPaddingEnabled="False"
+            SelectionChanged="NavView_SelectionChanged">
+
+            <controls:NavigationView.MenuItems>
+                <controls:NavigationViewItem Content="Установка" Tag="install" Icon="Download"/>
+                <controls:NavigationViewItem Content="Твики" Tag="tweaks">
+                    <controls:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D5;"/>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+                <controls:NavigationViewItem Content="Система" Tag="system" Icon="Setting"/>
+                <controls:NavigationViewItem Content="Обновления" Tag="updates" Icon="Sync"/>
+            </controls:NavigationView.MenuItems>
+
+            <controls:Frame x:Name="ContentFrame" Padding="4,0,4,4"/>
+        </controls:NavigationView>
+
+        <Border Grid.Row="2" Style="{StaticResource FooterBarStyle}">
+            <Grid Padding="16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock x:Name="ThemeLabel" Text="Тема" VerticalAlignment="Center" Style="{StaticResource CaptionStyle}"/>
+                    <ComboBox x:Name="ThemeCombo"
+                              MinHeight="32" MinWidth="148"
+                              SelectionChanged="ThemeCombo_SelectionChanged">
+                        <ComboBoxItem Content="Системная" Tag="system"/>
+                        <ComboBoxItem Content="Тёмная" Tag="dark"/>
+                        <ComboBoxItem Content="Светлая" Tag="light"/>
+                    </ComboBox>
+                    <TextBlock x:Name="VersionText" VerticalAlignment="Center"
+                               Margin="8,0,0,0" Style="{StaticResource CaptionStyle}"/>
+                    <Button x:Name="UpdateButton" Visibility="Collapsed"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="UpdateButton_Click"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button x:Name="LoadButton" Content="Загрузить конфиг" Click="LoadButton_Click"
+                            Style="{StaticResource GhostButtonStyle}"/>
+                    <Button x:Name="SaveButton" Content="Сохранить конфиг" Click="SaveButton_Click"
+                            Style="{StaticResource AccentButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

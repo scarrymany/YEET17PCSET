@@ -1,0 +1,8 @@
+namespace yeet17
+{
+    [default_interface]
+    runtimeclass InstallPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        InstallPage();
+    }
+}

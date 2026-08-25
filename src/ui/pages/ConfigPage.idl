@@ -1,0 +1,8 @@
+namespace yeet17
+{
+    [default_interface]
+    runtimeclass ConfigPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        ConfigPage();
+    }
+}

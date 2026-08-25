@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "yeet17pcset",
+  "version-string": "1.0.0",
+  "description": "YEET17PCSET — native Windows post-install setup (WinUI 3 / C++23)",
+  "homepage": "https://github.com/yeet17/YEET17PCSET",
+  "license": "MIT",
+  "supports": "windows",
+  "builtin-baseline": "00c5775211f45cd08b37fce0484b4cb940e422ab",
+  "dependencies": [
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.3"
+    },
+    {
+      "name": "spdlog",
+      "version>=": "1.14.1",
+      "features": ["fmt"]
+    }
+  ]
+}

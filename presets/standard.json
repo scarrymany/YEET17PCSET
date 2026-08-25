@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "app": "YEET17PCSET",
+  "id": "standard",
+  "name": "Стандартный",
+  "title": "Стандартный",
+  "description": "Все 16 essential: телеметрия, privacy, Copilot и виджеты на панели, классическое меню, проводник.",
+  "createdAt": "2026-08-25T00:00:00Z",
+  "theme": "system",
+  "packages": [],
+  "tweaks": {
+    "telemetry.disable": true,
+    "telemetry.ceip": true,
+    "telemetry.feedback": true,
+    "privacy.advertising": true,
+    "privacy.tailored": true,
+    "privacy.suggestions": true,
+    "privacy.ink": true,
+    "privacy.activity": true,
+    "copilot.taskbar": true,
+    "widgets.taskbar": true,
+    "explorer.classic_menu": true,
+    "explorer.file_ext": true,
+    "explorer.hidden": true,
+    "explorer.compact": true,
+    "ui.start_recommendations": true,
+    "ui.lockscreen_spotlight": true
+  },
+  "features": {},
+  "updates": {
+    "mode": "default",
+    "pauseDays": 0
+  },
+  "customPackages": []
+}

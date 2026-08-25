@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!--
+    Consumed by the Visual Studio generator. Unpackaged WinUI 3 exe.
+    Directory.Build.props applies tree-wide, including to the plain "Utility" projects
+    CMake generates for add_custom_target() (the standalone XamlCompiler.exe runners) -
+    those never declare a PackageReference, so dragging them into UseWinUI/WindowsAppSDK
+    NuGet resolution breaks their build. Skip all of this for those utility projects.
+    ConfigurationType isn't set yet at Directory.Build.props evaluation time (it's a
+    per-config PropertyGroup evaluated after Microsoft.Cpp.Default.props imports this
+    file), so match on the generated project name instead.
+  -->
+  <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('_xaml')) and !$(MSBuildProjectName.EndsWith('_xaml_pass2'))">
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <AppxPackage>false</AppxPackage>
+    <UseWinUI>true</UseWinUI>
+    <!-- Unpackaged exe ships no .resw/.pri resources; MrtCore.PriGen.targets otherwise
+         defaults this to true and needs Pri.Tasks.dll from the UWP packaging workload. -->
+    <AppxGeneratePriEnabled>false</AppxGeneratePriEnabled>
+    <WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+</Project>

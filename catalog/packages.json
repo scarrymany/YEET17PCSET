@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "browsers",
+      "name": "Браузеры"
+    },
+    {
+      "id": "development",
+      "name": "Разработка"
+    },
+    {
+      "id": "utilities",
+      "name": "Утилиты"
+    },
+    {
+      "id": "communication",
+      "name": "Общение"
+    },
+    {
+      "id": "media",
+      "name": "Медиа"
+    },
+    {
+      "id": "office",
+      "name": "Офис"
+    },
+    {
+      "id": "gaming",
+      "name": "Игры"
+    }
+  ],
+  "packages": [
+    {
+      "id": "Google.Chrome",
+      "name": "Google Chrome",
+      "description": "Браузер Google",
+      "category": "browsers"
+    },
+    {
+      "id": "Mozilla.Firefox",
+      "name": "Mozilla Firefox",
+      "description": "Свободный браузер Mozilla",
+      "category": "browsers"
+    },
+    {
+      "id": "Brave.Brave",
+      "name": "Brave",
+      "description": "Браузер с блокировкой рекламы",
+      "category": "browsers"
+    },
+    {
+      "id": "Microsoft.Edge",
+      "name": "Microsoft Edge",
+      "description": "Браузер на Chromium от Microsoft",
+      "category": "browsers"
+    },
+    {
+      "id": "Vivaldi.Vivaldi",
+      "name": "Vivaldi",
+      "description": "Гибкий браузер на Chromium",
+      "category": "browsers"
+    },
+    {
+      "id": "TorProject.TorBrowser",
+      "name": "Tor Browser",
+      "description": "Анонимный браузер через сеть Tor",
+      "category": "browsers"
+    },
+    {
+      "id": "Git.Git",
+      "name": "Git",
+      "description": "Система контроля версий",
+      "category": "development"
+    },
+    {
+      "id": "Python.Python.3.12",
+      "name": "Python 3.12",
+      "description": "Интерпретатор Python 3.12",
+      "category": "development"
+    },
+    {
+      "id": "OpenJS.NodeJS.LTS",
+      "name": "Node.js LTS",
+      "description": "LTS-сборка Node.js",
+      "category": "development"
+    },
+    {
+      "id": "Microsoft.VisualStudioCode",
+      "name": "Visual Studio Code",
+      "description": "Редактор кода Microsoft",
+      "category": "development"
+    },
+    {
+      "id": "Microsoft.VisualStudio.2022.Community",
+      "name": "Visual Studio 2022 Community",
+      "description": "IDE Visual Studio 2022 (Community)",
+      "category": "development"
+    },
+    {
+      "id": "JetBrains.Toolbox",
+      "name": "JetBrains Toolbox",
+      "description": "Установщик IDE JetBrains",
+      "category": "development"
+    },
+    {
+      "id": "Docker.DockerDesktop",
+      "name": "Docker Desktop",
+      "description": "Контейнеры Docker на Windows",
+      "category": "development"
+    },
+    {
+      "id": "Rustlang.Rustup",
+      "name": "Rustup",
+      "description": "Установщик инструментария Rust",
+      "category": "development"
+    },
+    {
+      "id": "GoLang.Go",
+      "name": "Go",
+      "description": "Компилятор языка Go",
+      "category": "development"
+    },
+    {
+      "id": "7zip.7zip",
+      "name": "7-Zip",
+      "description": "Архиватор 7-Zip",
+      "category": "utilities"
+    },
+    {
+      "id": "voidtools.Everything",
+      "name": "Everything",
+      "description": "Мгновенный поиск файлов",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.PowerToys",
+      "name": "PowerToys",
+      "description": "Набор утилит Microsoft PowerToys",
+      "category": "utilities"
+    },
+    {
+      "id": "ShareX.ShareX",
+      "name": "ShareX",
+      "description": "Снимки экрана и запись",
+      "category": "utilities"
+    },
+    {
+      "id": "Notepad++.Notepad++",
+      "name": "Notepad++",
+      "description": "Лёгкий текстовый редактор",
+      "category": "utilities"
+    },
+    {
+      "id": "RARLab.WinRAR",
+      "name": "WinRAR",
+      "description": "Архиватор WinRAR",
+      "category": "utilities"
+    },
+    {
+      "id": "CPUID.CPU-Z",
+      "name": "CPU-Z",
+      "description": "Сведения о процессоре и плате",
+      "category": "utilities"
+    },
+    {
+      "id": "REALiX.HWiNFO",
+      "name": "HWiNFO",
+      "description": "Железо, датчики и отчёт",
+      "category": "utilities"
+    },
+    {
+      "id": "Telegram.TelegramDesktop",
+      "name": "Telegram",
+      "description": "Мессенджер Telegram для ПК",
+      "category": "communication"
+    },
+    {
+      "id": "Discord.Discord",
+      "name": "Discord",
+      "description": "Голос, чат и сообщества",
+      "category": "communication"
+    },
+    {
+      "id": "Zoom.Zoom",
+      "name": "Zoom",
+      "description": "Видеоконференции Zoom",
+      "category": "communication"
+    },
+    {
+      "id": "SlackTechnologies.Slack",
+      "name": "Slack",
+      "description": "Корпоративный мессенджер Slack",
+      "category": "communication"
+    },
+    {
+      "id": "VideoLAN.VLC",
+      "name": "VLC",
+      "description": "Проигрыватель VLC",
+      "category": "media"
+    },
+    {
+      "id": "Spotify.Spotify",
+      "name": "Spotify",
+      "description": "Стриминг музыки Spotify",
+      "category": "media"
+    },
+    {
+      "id": "PeterPawlowski.foobar2000",
+      "name": "foobar2000",
+      "description": "Аудиоплеер foobar2000",
+      "category": "media"
+    },
+    {
+      "id": "TheDocumentFoundation.LibreOffice",
+      "name": "LibreOffice",
+      "description": "Офисный пакет LibreOffice",
+      "category": "office"
+    },
+    {
+      "id": "Valve.Steam",
+      "name": "Steam",
+      "description": "Магазин и лаунчер Steam",
+      "category": "gaming"
+    },
+    {
+      "id": "EpicGames.EpicGamesLauncher",
+      "name": "Epic Games Launcher",
+      "description": "Лаунчер Epic Games",
+      "category": "gaming"
+    }
+  ]
+}
