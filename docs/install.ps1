@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 $repo = 'scarrymany/YEET17PCSET'
 
 Write-Host ''
-Write-Host '  YEET17PCSET — установка' -ForegroundColor Cyan
+Write-Host '  YEET17PCSET installer' -ForegroundColor Cyan
 Write-Host "  https://github.com/$repo"
 Write-Host ''
 
@@ -20,25 +20,25 @@ $tag = $release.tag_name
 $msi = $release.assets | Where-Object { $_.name -like '*.msi' } | Select-Object -First 1
 if ($msi) {
     $path = Join-Path $env:TEMP $msi.name
-    Write-Host "  Загрузка $($msi.name) ($tag)..."
+    Write-Host "  Downloading $($msi.name) ($tag)..."
     Invoke-WebRequest $msi.browser_download_url -OutFile $path -UseBasicParsing
-    Write-Host '  Установка — подтвердите запрос UAC...'
+    Write-Host '  Installing - confirm the UAC prompt...'
     $p = Start-Process msiexec -ArgumentList '/i', "`"$path`"", '/passive' -Wait -PassThru
     Remove-Item $path -ErrorAction SilentlyContinue
-    if ($p.ExitCode -ne 0) { throw "msiexec завершился с кодом $($p.ExitCode)" }
+    if ($p.ExitCode -ne 0) { throw "msiexec exited with code $($p.ExitCode)" }
     Write-Host ''
-    Write-Host "  Готово: YEET17PCSET $tag установлен." -ForegroundColor Green
-    Write-Host '  Запуск — ярлык YEET17PCSET в меню «Пуск».'
+    Write-Host "  Done: YEET17PCSET $tag installed." -ForegroundColor Green
+    Write-Host '  Launch it from the Start Menu (YEET17PCSET shortcut).'
     return
 }
 
 $zip = $release.assets | Where-Object { $_.name -like '*.zip' } | Select-Object -First 1
-if (-not $zip) { throw "В релизе $tag нет установочных файлов" }
+if (-not $zip) { throw "Release $tag has no installable assets" }
 $zipPath = Join-Path $env:TEMP $zip.name
 $dest = Join-Path $env:LOCALAPPDATA 'Programs\YEET17PCSET'
-Write-Host "  Загрузка $($zip.name) ($tag)..."
+Write-Host "  Downloading $($zip.name) ($tag)..."
 Invoke-WebRequest $zip.browser_download_url -OutFile $zipPath -UseBasicParsing
-Write-Host "  Распаковка в $dest..."
+Write-Host "  Extracting to $dest..."
 Expand-Archive -LiteralPath $zipPath -DestinationPath $dest -Force
 Remove-Item $zipPath -ErrorAction SilentlyContinue
 $shell = New-Object -ComObject WScript.Shell
@@ -48,5 +48,5 @@ $lnk.WorkingDirectory = $dest
 $lnk.IconLocation = Join-Path $dest 'resources\app.ico'
 $lnk.Save()
 Write-Host ''
-Write-Host "  Готово: YEET17PCSET $tag установлен в $dest" -ForegroundColor Green
-Write-Host '  Запуск — ярлык YEET17PCSET в меню «Пуск».'
+Write-Host "  Done: YEET17PCSET $tag installed to $dest" -ForegroundColor Green
+Write-Host '  Launch it from the Start Menu (YEET17PCSET shortcut).'
