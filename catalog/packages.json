@@ -84,6 +84,12 @@
       "category": "browsers"
     },
     {
+      "id": "LibreWolf.LibreWolf",
+      "name": "LibreWolf",
+      "description": "Firefox с упором на приватность из коробки",
+      "category": "browsers"
+    },
+    {
       "id": "Git.Git",
       "name": "Git",
       "description": "Система контроля версий",
@@ -147,6 +153,36 @@
       "id": "Microsoft.PowerShell",
       "name": "PowerShell 7",
       "description": "Кроссплатформенный PowerShell нового поколения",
+      "category": "development"
+    },
+    {
+      "id": "GitHub.GitHubDesktop",
+      "name": "GitHub Desktop",
+      "description": "Git с графическим интерфейсом от GitHub",
+      "category": "development"
+    },
+    {
+      "id": "Postman.Postman",
+      "name": "Postman",
+      "description": "Тестирование и отладка API",
+      "category": "development"
+    },
+    {
+      "id": "DBeaver.DBeaver.Community",
+      "name": "DBeaver Community",
+      "description": "Универсальный клиент баз данных",
+      "category": "development"
+    },
+    {
+      "id": "WinMerge.WinMerge",
+      "name": "WinMerge",
+      "description": "Сравнение и слияние файлов и папок",
+      "category": "development"
+    },
+    {
+      "id": "AutoHotkey.AutoHotkey",
+      "name": "AutoHotkey",
+      "description": "Автоматизация Windows: скрипты и хоткеи",
       "category": "development"
     },
     {
@@ -336,6 +372,78 @@
       "category": "utilities"
     },
     {
+      "id": "Rufus.Rufus",
+      "name": "Rufus",
+      "description": "Загрузочные USB-флешки из ISO",
+      "category": "utilities"
+    },
+    {
+      "id": "Balena.Etcher",
+      "name": "balenaEtcher",
+      "description": "Прожиг образов на USB и SD-карты",
+      "category": "utilities"
+    },
+    {
+      "id": "Ventoy.Ventoy",
+      "name": "Ventoy",
+      "description": "Мультизагрузочная флешка: просто копируй ISO",
+      "category": "utilities"
+    },
+    {
+      "id": "CrystalDiskInfo.CrystalDiskInfo",
+      "name": "CrystalDiskInfo",
+      "description": "Здоровье дисков по S.M.A.R.T.",
+      "category": "utilities"
+    },
+    {
+      "id": "CPUID.HWMonitor",
+      "name": "HWMonitor",
+      "description": "Температуры, напряжения и вентиляторы",
+      "category": "utilities"
+    },
+    {
+      "id": "BleachBit.BleachBit",
+      "name": "BleachBit",
+      "description": "Чистка системы и приватных следов",
+      "category": "utilities"
+    },
+    {
+      "id": "AntibodySoftware.WizTree",
+      "name": "WizTree",
+      "description": "Мгновенный анализ занятого места (MFT)",
+      "category": "utilities"
+    },
+    {
+      "id": "Klocman.BulkCrapUninstaller",
+      "name": "Bulk Crap Uninstaller",
+      "description": "Массовое удаление программ и остатков",
+      "category": "utilities"
+    },
+    {
+      "id": "Rainmeter.Rainmeter",
+      "name": "Rainmeter",
+      "description": "Виджеты и кастомизация рабочего стола",
+      "category": "utilities"
+    },
+    {
+      "id": "CodeSector.TeraCopy",
+      "name": "TeraCopy",
+      "description": "Быстрое копирование файлов с проверкой",
+      "category": "utilities"
+    },
+    {
+      "id": "TGRMNSoftware.BulkRenameUtility",
+      "name": "Bulk Rename Utility",
+      "description": "Массовое переименование файлов",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.Sysinternals.ProcessMonitor",
+      "name": "Process Monitor",
+      "description": "Мониторинг файловой системы и реестра",
+      "category": "utilities"
+    },
+    {
       "id": "qBittorrent.qBittorrent",
       "name": "qBittorrent",
       "description": "Торрент-клиент без рекламы",
@@ -384,6 +492,24 @@
       "category": "network"
     },
     {
+      "id": "WiresharkFoundation.Wireshark",
+      "name": "Wireshark",
+      "description": "Анализатор сетевого трафика",
+      "category": "network"
+    },
+    {
+      "id": "Insecure.Nmap",
+      "name": "Nmap",
+      "description": "Сканер сети и портов",
+      "category": "network"
+    },
+    {
+      "id": "Microsoft.Sysinternals.TCPView",
+      "name": "TCPView",
+      "description": "Кто и куда ходит по сети - от Sysinternals",
+      "category": "network"
+    },
+    {
       "id": "Bitwarden.Bitwarden",
       "name": "Bitwarden",
       "description": "Облачный менеджер паролей с открытым кодом",
@@ -405,6 +531,24 @@
       "id": "WireGuard.WireGuard",
       "name": "WireGuard",
       "description": "Быстрый современный VPN-протокол и клиент",
+      "category": "security"
+    },
+    {
+      "id": "Malwarebytes.Malwarebytes",
+      "name": "Malwarebytes",
+      "description": "Сканер вредоносного ПО",
+      "category": "security"
+    },
+    {
+      "id": "Henry++.simplewall",
+      "name": "Simplewall",
+      "description": "Простой контроль исходящего трафика (WFP)",
+      "category": "security"
+    },
+    {
+      "id": "SecureMixLLC.GlassWire",
+      "name": "GlassWire",
+      "description": "Визуальный мониторинг сети и фаервол",
       "category": "security"
     },
     {
@@ -432,6 +576,24 @@
       "category": "graphics"
     },
     {
+      "id": "BlenderFoundation.Blender",
+      "name": "Blender",
+      "description": "3D-моделирование, анимация и рендер",
+      "category": "graphics"
+    },
+    {
+      "id": "KDE.Krita",
+      "name": "Krita",
+      "description": "Цифровая живопись и рисование",
+      "category": "graphics"
+    },
+    {
+      "id": "XnSoft.XnViewMP",
+      "name": "XnView MP",
+      "description": "Просмотр и конвертация изображений",
+      "category": "graphics"
+    },
+    {
       "id": "Telegram.TelegramDesktop",
       "name": "Telegram",
       "description": "Мессенджер Telegram для ПК",
@@ -453,6 +615,12 @@
       "id": "SlackTechnologies.Slack",
       "name": "Slack",
       "description": "Корпоративный мессенджер Slack",
+      "category": "communication"
+    },
+    {
+      "id": "Mozilla.Thunderbird",
+      "name": "Thunderbird",
+      "description": "Почтовый клиент Mozilla",
       "category": "communication"
     },
     {
@@ -499,6 +667,42 @@
       "category": "media"
     },
     {
+      "id": "clsid2.mpc-hc",
+      "name": "MPC-HC",
+      "description": "Лёгкий классический видеоплеер",
+      "category": "media"
+    },
+    {
+      "id": "Daum.PotPlayer",
+      "name": "PotPlayer",
+      "description": "Мощный видеоплеер с кучей настроек",
+      "category": "media"
+    },
+    {
+      "id": "AIMP.AIMP",
+      "name": "AIMP",
+      "description": "Музыкальный плеер",
+      "category": "media"
+    },
+    {
+      "id": "CodecGuide.K-LiteCodecPack.Standard",
+      "name": "K-Lite Codec Pack",
+      "description": "Кодеки для любых видео и аудио",
+      "category": "media"
+    },
+    {
+      "id": "shinchiro.mpv",
+      "name": "mpv",
+      "description": "Минималистичный плеер для гиков",
+      "category": "media"
+    },
+    {
+      "id": "XBMCFoundation.Kodi",
+      "name": "Kodi",
+      "description": "Медиацентр для ТВ и домашней библиотеки",
+      "category": "media"
+    },
+    {
       "id": "TheDocumentFoundation.LibreOffice",
       "name": "LibreOffice",
       "description": "Офисный пакет LibreOffice",
@@ -529,6 +733,48 @@
       "category": "office"
     },
     {
+      "id": "Joplin.Joplin",
+      "name": "Joplin",
+      "description": "Заметки в Markdown с синхронизацией",
+      "category": "office"
+    },
+    {
+      "id": "Notion.Notion",
+      "name": "Notion",
+      "description": "Заметки, базы и планирование",
+      "category": "office"
+    },
+    {
+      "id": "Adobe.Acrobat.Reader.64-bit",
+      "name": "Adobe Acrobat Reader",
+      "description": "Стандартный просмотрщик PDF",
+      "category": "office"
+    },
+    {
+      "id": "Foxit.FoxitReader",
+      "name": "Foxit PDF Reader",
+      "description": "Быстрая альтернатива Acrobat",
+      "category": "office"
+    },
+    {
+      "id": "calibre.calibre",
+      "name": "Calibre",
+      "description": "Библиотека и конвертер электронных книг",
+      "category": "office"
+    },
+    {
+      "id": "ONLYOFFICE.DesktopEditors",
+      "name": "ONLYOFFICE",
+      "description": "Офисный пакет, совместимый с MS Office",
+      "category": "office"
+    },
+    {
+      "id": "MEGA.MEGAsync",
+      "name": "MEGA Sync",
+      "description": "Облако MEGA на рабочем столе",
+      "category": "office"
+    },
+    {
       "id": "Valve.Steam",
       "name": "Steam",
       "description": "Магазин и лаунчер Steam",
@@ -550,6 +796,60 @@
       "id": "Playnite.Playnite",
       "name": "Playnite",
       "description": "Единая библиотека игр из всех лаунчеров",
+      "category": "gaming"
+    },
+    {
+      "id": "ElectronicArts.EADesktop",
+      "name": "EA App",
+      "description": "Лаунчер Electronic Arts",
+      "category": "gaming"
+    },
+    {
+      "id": "Blizzard.BattleNet",
+      "name": "Battle.net",
+      "description": "Лаунчер Blizzard",
+      "category": "gaming"
+    },
+    {
+      "id": "GOG.Galaxy",
+      "name": "GOG Galaxy",
+      "description": "Лаунчер GOG и объединение библиотек",
+      "category": "gaming"
+    },
+    {
+      "id": "HeroicGamesLauncher.HeroicGamesLauncher",
+      "name": "Heroic Games Launcher",
+      "description": "Открытый клиент Epic и GOG",
+      "category": "gaming"
+    },
+    {
+      "id": "Ubisoft.Connect",
+      "name": "Ubisoft Connect",
+      "description": "Лаунчер Ubisoft",
+      "category": "gaming"
+    },
+    {
+      "id": "Amazon.Games",
+      "name": "Amazon Games",
+      "description": "Лаунчер Amazon с раздачами Prime",
+      "category": "gaming"
+    },
+    {
+      "id": "MoonlightGameStreamingProject.Moonlight",
+      "name": "Moonlight",
+      "description": "Стриминг игр с вашего ПК (клиент)",
+      "category": "gaming"
+    },
+    {
+      "id": "LizardByte.Sunshine",
+      "name": "Sunshine",
+      "description": "Сервер стриминга игр для Moonlight",
+      "category": "gaming"
+    },
+    {
+      "id": "Parsec.Parsec",
+      "name": "Parsec",
+      "description": "Удалённый доступ и игры по сети с низкой задержкой",
       "category": "gaming"
     }
   ]
