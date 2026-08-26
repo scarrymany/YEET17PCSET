@@ -186,6 +186,36 @@
       "category": "development"
     },
     {
+      "id": "Ollama.Ollama",
+      "name": "Ollama",
+      "description": "Локальный запуск LLM-моделей",
+      "category": "development"
+    },
+    {
+      "id": "Google.AndroidStudio",
+      "name": "Android Studio",
+      "description": "IDE для разработки под Android",
+      "category": "development"
+    },
+    {
+      "id": "Neovim.Neovim",
+      "name": "Neovim",
+      "description": "Современный Vim",
+      "category": "development"
+    },
+    {
+      "id": "MHNexus.HxD",
+      "name": "HxD",
+      "description": "Быстрый hex-редактор",
+      "category": "development"
+    },
+    {
+      "id": "Microsoft.Sysinternals.DebugView",
+      "name": "DebugView",
+      "description": "Просмотр отладочного вывода программ",
+      "category": "development"
+    },
+    {
       "id": "Microsoft.VCRedist.2005.x86",
       "name": "Visual C++ 2005 (x86)",
       "description": "Библиотеки VC++ 2005 для старых программ",
@@ -285,6 +315,12 @@
       "id": "Wagnardsoft.DisplayDriverUninstaller",
       "name": "Display Driver Uninstaller",
       "description": "Чистое удаление видеодрайверов (DDU)",
+      "category": "drivers"
+    },
+    {
+      "id": "WinFsp.WinFsp",
+      "name": "WinFsp",
+      "description": "Драйвер пользовательских файловых систем (для rclone, sshfs)",
       "category": "drivers"
     },
     {
@@ -444,6 +480,78 @@
       "category": "utilities"
     },
     {
+      "id": "Microsoft.Sysinternals.ZoomIt",
+      "name": "ZoomIt",
+      "description": "Лупа и рисование на экране для презентаций",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.Sysinternals.BGInfo",
+      "name": "BGInfo",
+      "description": "Данные системы прямо на обоях",
+      "category": "utilities"
+    },
+    {
+      "id": "Microsoft.Sysinternals.Desktops",
+      "name": "Desktops",
+      "description": "Четыре виртуальных рабочих стола от Sysinternals",
+      "category": "utilities"
+    },
+    {
+      "id": "File-New-Project.EarTrumpet",
+      "name": "EarTrumpet",
+      "description": "Громкость каждого приложения из трея",
+      "category": "utilities"
+    },
+    {
+      "id": "Ditto.Ditto",
+      "name": "Ditto",
+      "description": "История буфера обмена",
+      "category": "utilities"
+    },
+    {
+      "id": "stnkl.EverythingToolbar",
+      "name": "Everything Toolbar",
+      "description": "Поиск Everything прямо в панели задач",
+      "category": "utilities"
+    },
+    {
+      "id": "Flow-Launcher.Flow-Launcher",
+      "name": "Flow Launcher",
+      "description": "Быстрый запуск всего по Alt+Space",
+      "category": "utilities"
+    },
+    {
+      "id": "AltSnap.AltSnap",
+      "name": "AltSnap",
+      "description": "Перетаскивание окон с зажатым Alt",
+      "category": "utilities"
+    },
+    {
+      "id": "code52.Carnac",
+      "name": "Carnac",
+      "description": "Показ нажимаемых клавиш на экране",
+      "category": "utilities"
+    },
+    {
+      "id": "FastCopy.FastCopy",
+      "name": "FastCopy",
+      "description": "Самое быстрое копирование файлов",
+      "category": "utilities"
+    },
+    {
+      "id": "fastfetch-cli.fastfetch",
+      "name": "Fastfetch",
+      "description": "Инфо о системе в терминале (neofetch)",
+      "category": "utilities"
+    },
+    {
+      "id": "Betaflight.Betaflight-Configurator",
+      "name": "Betaflight Configurator",
+      "description": "Настройка полётных контроллеров FPV-дронов",
+      "category": "utilities"
+    },
+    {
       "id": "qBittorrent.qBittorrent",
       "name": "qBittorrent",
       "description": "Торрент-клиент без рекламы",
@@ -507,6 +615,12 @@
       "id": "Microsoft.Sysinternals.TCPView",
       "name": "TCPView",
       "description": "Кто и куда ходит по сети - от Sysinternals",
+      "category": "network"
+    },
+    {
+      "id": "LocalSend.LocalSend",
+      "name": "LocalSend",
+      "description": "Передача файлов между устройствами по Wi-Fi",
       "category": "network"
     },
     {
@@ -594,6 +708,60 @@
       "category": "graphics"
     },
     {
+      "id": "Flameshot.Flameshot",
+      "name": "Flameshot",
+      "description": "Скриншоты с разметкой",
+      "category": "graphics"
+    },
+    {
+      "id": "Greenshot.Greenshot",
+      "name": "Greenshot",
+      "description": "Лёгкий скриншотер",
+      "category": "graphics"
+    },
+    {
+      "id": "Skillbrains.Lightshot",
+      "name": "Lightshot",
+      "description": "Скриншоты в два клика",
+      "category": "graphics"
+    },
+    {
+      "id": "NickeManarin.ScreenToGif",
+      "name": "ScreenToGif",
+      "description": "Запись экрана в GIF с редактором",
+      "category": "graphics"
+    },
+    {
+      "id": "Cockos.LICEcap",
+      "name": "LICEcap",
+      "description": "Простейшая запись GIF с экрана",
+      "category": "graphics"
+    },
+    {
+      "id": "darktable.darktable",
+      "name": "darktable",
+      "description": "Обработка RAW-фотографий (Lightroom)",
+      "category": "graphics"
+    },
+    {
+      "id": "KDE.digikam",
+      "name": "digiKam",
+      "description": "Каталогизация и обработка фото",
+      "category": "graphics"
+    },
+    {
+      "id": "qimgv.qimgv",
+      "name": "qimgv",
+      "description": "Быстрый минималистичный просмотрщик",
+      "category": "graphics"
+    },
+    {
+      "id": "Ultimaker.Cura",
+      "name": "Cura",
+      "description": "Слайсер для 3D-печати",
+      "category": "graphics"
+    },
+    {
       "id": "Telegram.TelegramDesktop",
       "name": "Telegram",
       "description": "Мессенджер Telegram для ПК",
@@ -621,6 +789,24 @@
       "id": "Mozilla.Thunderbird",
       "name": "Thunderbird",
       "description": "Почтовый клиент Mozilla",
+      "category": "communication"
+    },
+    {
+      "id": "OpenWhisperSystems.Signal",
+      "name": "Signal",
+      "description": "Приватный мессенджер",
+      "category": "communication"
+    },
+    {
+      "id": "Element.Element",
+      "name": "Element",
+      "description": "Клиент Matrix",
+      "category": "communication"
+    },
+    {
+      "id": "Caprine.Caprine",
+      "name": "Caprine",
+      "description": "Facebook Messenger на рабочем столе",
       "category": "communication"
     },
     {
@@ -703,6 +889,90 @@
       "category": "media"
     },
     {
+      "id": "Meltytech.Shotcut",
+      "name": "Shotcut",
+      "description": "Бесплатный видеоредактор",
+      "category": "media"
+    },
+    {
+      "id": "KDE.Kdenlive",
+      "name": "Kdenlive",
+      "description": "Профессиональный монтаж видео",
+      "category": "media"
+    },
+    {
+      "id": "StrawberryMusicPlayer.Strawberry",
+      "name": "Strawberry",
+      "description": "Музыкальный плеер для коллекций",
+      "category": "media"
+    },
+    {
+      "id": "SMPlayer.SMPlayer",
+      "name": "SMPlayer",
+      "description": "Плеер с запоминанием позиции",
+      "category": "media"
+    },
+    {
+      "id": "Nikse.SubtitleEdit",
+      "name": "Subtitle Edit",
+      "description": "Редактор субтитров",
+      "category": "media"
+    },
+    {
+      "id": "SergeySerkov.TagScanner",
+      "name": "TagScanner",
+      "description": "Редактор тегов музыки",
+      "category": "media"
+    },
+    {
+      "id": "jeffvli.Feishin",
+      "name": "Feishin",
+      "description": "Клиент музыкальных серверов (Navidrome, Jellyfin)",
+      "category": "media"
+    },
+    {
+      "id": "Jellyfin.JellyfinMediaPlayer",
+      "name": "Jellyfin Media Player",
+      "description": "Клиент медиасервера Jellyfin",
+      "category": "media"
+    },
+    {
+      "id": "Stremio.Stremio",
+      "name": "Stremio",
+      "description": "Фильмы и сериалы из дополнений",
+      "category": "media"
+    },
+    {
+      "id": "stax76.mpv.net",
+      "name": "mpv.net",
+      "description": "mpv с настройками для Windows",
+      "category": "media"
+    },
+    {
+      "id": "KDE.Haruna",
+      "name": "Haruna",
+      "description": "Видеоплеер KDE на базе mpv",
+      "category": "media"
+    },
+    {
+      "id": "Clementine.Clementine",
+      "name": "Clementine",
+      "description": "Классический музыкальный плеер",
+      "category": "media"
+    },
+    {
+      "id": "FxSound.FxSound",
+      "name": "FxSound",
+      "description": "Улучшение звука системным эквалайзером",
+      "category": "media"
+    },
+    {
+      "id": "JeniusApps.Ambie",
+      "name": "Ambie",
+      "description": "Фоновые звуки для фокуса и сна",
+      "category": "media"
+    },
+    {
       "id": "TheDocumentFoundation.LibreOffice",
       "name": "LibreOffice",
       "description": "Офисный пакет LibreOffice",
@@ -772,6 +1042,30 @@
       "id": "MEGA.MEGAsync",
       "name": "MEGA Sync",
       "description": "Облако MEGA на рабочем столе",
+      "category": "office"
+    },
+    {
+      "id": "Anki.Anki",
+      "name": "Anki",
+      "description": "Интервальное запоминание по карточкам",
+      "category": "office"
+    },
+    {
+      "id": "Logseq.Logseq",
+      "name": "Logseq",
+      "description": "Заметки-аутлайнер и база знаний",
+      "category": "office"
+    },
+    {
+      "id": "KDE.Okular",
+      "name": "Okular",
+      "description": "Универсальный просмотрщик документов KDE",
+      "category": "office"
+    },
+    {
+      "id": "geeksoftwareGmbH.PDF24Creator",
+      "name": "PDF24 Creator",
+      "description": "Всё для PDF: конвертация, сжатие, объединение",
       "category": "office"
     },
     {
